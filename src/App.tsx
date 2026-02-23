@@ -73,29 +73,36 @@ const solvedProblems = [
     link: "https://leefuneralhome.netlify.app",
     linkText: "Lee Funeral Home"
   },
+    {
+    title: "11. Valentine",
+    problem: "Teenager or people in love are used to oral proposals. Patners underestimate the effort of their loved ones",
+    solution: "Built a lovely valentime mobile app that allows users to send valentines messages to their loved ones. This makes love surprise and different.",
+    link: "https://be-my-valentine-wc.vercel.app/",
+    linkText: "Valentine"
+  },
   {
-    title: "11. TriCre8 Workflow (Email Automation System)",
+    title: "12. TriCre8 Workflow (Email Automation System)",
     problem: "Daily unread emails required manual review, consuming time and causing important messages to be overlooked.",
     solution: "Engineered an automated workflow that scans unread emails daily, summarizes key points, and delivers prioritized insights directly to WhatsApp. The system eliminates manual sorting and ensures no critical information is missed.",
     link: "https://wa.me/254727921038",
     linkText: "TriCre8 Workflow"
   },
   {
-    title: "12. Lorem Productions (Film Production Company)",
+    title: "13. Lorem Productions (Film Production Company)",
     problem: "A filming company experienced low social media engagement due to weak editing structure and inconsistent video quality.",
     solution: "Re-edited and restructured their visual content professionally, enhancing pacing, clarity, and storytelling. The improved production quality increased audience engagement and strengthened brand perception online.",
     link: "https://youtu.be/lGw6ix1Mydk?si=uzJjdWEUs8vOoqtf",
     linkText: "Lorem Productions"
   },
     {
-    title: "13. Tech Haven",
+    title: "14. Tech Haven",
     problem: "A professional high-end cyber cafe lacked professionalism because of lack of brand visibility and customer service.",
     solution: "Enhanced brand visibility through designing a uniques remarkable logo. This improved their brand awareness and strengthened customer loyalty.",
     link: "https://drive.google.com/file/d/1GdAphvWmDZHAMyx5yJn13YKZ8NyE73pT/",
     linkText: "Tech Haven"
   },
       {
-    title: "14. Skylink Hotel",
+    title: "15. Skylink Hotel",
     problem: "A well known remarkable Hotel in Kisii, lacked a well designed Menu to showcase their food and services.",
     solution: "Designed a visually appealing and user-friendly menu that highlights the hotel's unique offerings. This made their customers well satisfied, allowing guests to quickly find the items they are interested in.",
     link: "https://drive.google.com/file/d/1qAhlf3zXhbb40ijD45fiTJrHvUs8nEuk/",
