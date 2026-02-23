@@ -8,6 +8,11 @@ import { GoogleGenAI } from '@google/genai';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
+if (!process.env.GEMINI_API_KEY) {
+  console.error('GEMINI_API_KEY is required');
+  process.exit(1);
+}
+
 const app = express();
 app.use(express.json({ limit: '2mb' }));
 
@@ -272,10 +277,6 @@ app.post('/api/chat', async (req, res) => {
    if (!allowed) {
      return res.status(429).json({ error: 'Rate limit exceeded. Try again after reset.' });
    }
-
-  if (!clientId || !Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ error: 'Invalid request payload.' });
-  }
 
   if (!process.env.GEMINI_API_KEY) {
     return res.status(500).json({ error: 'Server missing Gemini API key.' });

@@ -1,20 +1,60 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Wazimu Portfolio
 
-# Run and deploy your AI Studio app
+Private personal portfolio site with a conversational intake flow and proposal approval.
 
-This contains everything you need to run your app locally.
+## Stack
 
-View your app in AI Studio: https://ai.studio/apps/95ed4a33-4377-4470-89df-a81a8a016d13
+- React + Vite
+- Express API server
+- Tailwind CSS
 
-## Run Locally
+## Requirements
 
-**Prerequisites:**  Node.js
+- Node.js 18+
 
+## Environment
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Create a `.env.local` file in the project root with:
+
+```
+GEMINI_API_KEY=your_gemini_key
+MAKE_WEBHOOK=your_webhook_url
+```
+
+`MAKE_WEBHOOK` can also be provided as `WEBHOOK_URL` or `WEBHOOK`.
+
+## Run locally
+
+Install dependencies:
+
+```
+npm install
+```
+
+Start the API server:
+
+```
+npm run server
+```
+
+Start the Vite dev server:
+
+```
+npm run dev
+```
+
+## Build
+
+```
+npm run build
+```
+
+## Lint
+
+```
+npm run lint
+```
+
+## Notes
+
+- This is a private portfolio project and is not intended for public reuse.
