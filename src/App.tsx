@@ -1,10 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ArrowUpRight, Mail, Send, CheckCircle2, Monitor, Smartphone, PenTool, Video, Zap, Brain, X } from 'lucide-react';
-import { GoogleGenAI } from '@google/genai';
 import { motion, AnimatePresence } from 'motion/react';
-
-// Initialize Gemini
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const solvedProblems = [
   {
@@ -12,21 +8,21 @@ const solvedProblems = [
     problem: "Students struggled to understand KUCCPS placement options. The official information was complex, static, and overwhelming. Many made blind course decisions without clarity on qualifications, competitiveness, or real-world implications.",
     solution: "Built an intelligent course-checking system that analyzes grades, explains eligibility clearly, and provides structured, simplified feedback. Added guided explanations and downloadable results to reduce confusion and improve decision-making.",
     link: "https://kuccpscoursechecker.co.ke",
-    linkText: "kuccpscoursechecker.co.ke"
+    linkText: "KUCCPS Course Checker"
   },
   {
     title: "2. Bingwa Posters",
     problem: "Agents and small businesses needed promotional posters constantly, but design was slow, inconsistent, and dependent on designers. This delayed marketing and reduced agility.",
     solution: "Built an automated poster-generation system where agents can instantly generate branded promotional posters using structured templates. The system removes dependency, ensures brand consistency, and speeds up marketing execution.",
     link: "https://bingwaposters.vercel.app",
-    linkText: "bingwaposters.vercel.app"
+    linkText: "Bingwa Posters"
   },
   {
     title: "3. SciDraft",
     problem: "Students and institutions struggled to structure scientific lab reports properly. Manual formatting caused inconsistency, time waste, and academic errors.",
     solution: "Developed an AI-powered lab report system that converts structured input into academically formatted drafts. It enforces logical structure, standard formatting, and reduces repetitive academic writing friction.",
     link: "https://scidraft.vercel.app",
-    linkText: "scidraft.vercel.app"
+    linkText: "SciDraft"
   },
   {
     title: "4. Compassion PDF System",
@@ -40,128 +36,72 @@ const solvedProblems = [
     problem: "A premium physical store selling luxurious scents and curated home accents had zero online presence. Customers searching online couldn’t find them. High-end branding existed offline, but digitally they were invisible — quietly losing potential buyers.",
     solution: "Built a refined, conversion-focused website that reflects the brand’s elegance and allows customers to discover products, explore collections, and connect directly. The system ensured they no longer lost online traffic and could convert interest into sales beyond foot traffic.",
     link: "https://white-barn.netlify.app",
-    linkText: "white-barn.netlify.app"
+    linkText: "White Barn"
   },
   {
     title: "6. Bangin Hair BK (Salon – New York)",
     problem: "A salon known for masterful cuts and transformative color had strong word-of-mouth reputation but no digital presence. New clients couldn’t preview services or validate credibility online.",
     solution: "Created a clean, visually expressive website showcasing services, style quality, and brand personality. The system positioned the salon professionally online, making discovery, trust-building, and client conversion seamless.",
     link: "https://banginhairbk.netlify.app",
-    linkText: "banginhairbk.netlify.app"
+    linkText: "Bangin Hair BK"
   },
   {
     title: "7. Morning Glory Restaurant (Australia)",
     problem: "A restaurant with strong local reputation and unforgettable cuisine had no website. Visitors and tourists searching online had no official reference point — losing reservation and walk-in opportunities.",
     solution: "Developed a modern, mobile-first website presenting the menu, ambiance, and contact details clearly. The system ensures customers can discover, evaluate, and plan visits without friction.",
     link: "https://morninggloryrestaurant.netlify.app",
-    linkText: "morninggloryrestaurant.netlify.app"
+    linkText: "Morning Glory Restaurant"
   },
   {
     title: "8. Polyclinique (Hospital – Tunisia)",
     problem: "A large hospital serving Hammam-Lif since 2012 lacked a structured digital interface. Patients needed reliable access to information about services, departments, and care without inconvenience.",
     solution: "Built a structured medical website prioritizing clarity, trust, and accessibility. The system organizes medical services and essential information clearly, ensuring patients can navigate care confidently.",
     link: "https://polyclinique.netlify.app",
-    linkText: "polyclinique.netlify.app"
+    linkText: "Polyclinique"
   },
   {
     title: "9. Garden Specialist Hospital (Nairobi)",
     problem: "A specialized healthcare provider required a digital platform reflecting excellence and professionalism. Without a structured website, patients lacked a centralized source of medical information.",
     solution: "Designed and implemented a clear, professional healthcare website that communicates specialization, trust, and authority while guiding patients efficiently to relevant services.",
     link: "https://gardenspecialist.netlify.app",
-    linkText: "gardenspecialist.netlify.app"
+    linkText: "Garden Specialist Hospital"
   },
   {
     title: "10. Lee Funeral Home (Nairobi)",
     problem: "A long-established, premium funeral home had a non-functional WordPress website. In moments when families needed immediate guidance, the digital system failed them.",
     solution: "Rebuilt and stabilized the website infrastructure, adding structured service pathways such as Immediate Support, Plan Ahead, Repatriation, and Cremation. The new system ensures families can access help quickly and clearly during critical moments.",
     link: "https://leefuneralhome.netlify.app",
-    linkText: "leefuneralhome.netlify.app"
+    linkText: "Lee Funeral Home"
   },
   {
     title: "11. TriCre8 Workflow (Email Automation System)",
     problem: "Daily unread emails required manual review, consuming time and causing important messages to be overlooked.",
     solution: "Engineered an automated workflow that scans unread emails daily, summarizes key points, and delivers prioritized insights directly to WhatsApp. The system eliminates manual sorting and ensures no critical information is missed.",
     link: "https://wa.me/254727921038",
-    linkText: "0727921038"
+    linkText: "TriCre8 Workflow"
   },
   {
     title: "12. Lorem Productions (Film Production Company)",
     problem: "A filming company experienced low social media engagement due to weak editing structure and inconsistent video quality.",
     solution: "Re-edited and restructured their visual content professionally, enhancing pacing, clarity, and storytelling. The improved production quality increased audience engagement and strengthened brand perception online.",
-    link: null,
-    linkText: null
+    link: "https://youtu.be/lGw6ix1Mydk?si=uzJjdWEUs8vOoqtf",
+    linkText: "Lorem Productions"
+  },
+    {
+    title: "13. Tech Haven",
+    problem: "A professional high-end cyber cafe lacked professionalism because of lack of brand visibility and customer service.",
+    solution: "Enhanced brand visibility through designing a uniques remarkable logo. This improved their brand awareness and strengthened customer loyalty.",
+    link: "https://drive.google.com/file/d/1GdAphvWmDZHAMyx5yJn13YKZ8NyE73pT/",
+    linkText: "Tech Haven"
+  },
+      {
+    title: "14. Skylink Hotel",
+    problem: "A well known remarkable Hotel in Kisii, lacked a well designed Menu to showcase their food and services.",
+    solution: "Designed a visually appealing and user-friendly menu that highlights the hotel's unique offerings. This made their customers well satisfied, allowing guests to quickly find the items they are interested in.",
+    link: "https://drive.google.com/file/d/1qAhlf3zXhbb40ijD45fiTJrHvUs8nEuk/",
+    linkText: "Skylink Hotel"
   }
 ];
-
-const SYSTEM_PROMPT = `You are a calm, highly competent digital problem-solver who thinks in systems, not services.
-
-Your role is NOT to give one-off answers.
-Your role is to understand the user deeply through conversation, identify what is broken, and only then propose a structured solution.
-
-Core behavior rules
-You must operate in multiple turns.
-Do NOT rush to solutions.
-Your first priority is understanding, not explaining.
-Ask only one or two intelligent questions per turn, based on what the user has already said.
-Adapt your questions dynamically depending on the business type, maturity, and clarity of the user.
-
-Conversation phases (internal, not shown to user)
-Phase 1: Understanding
-Acknowledge the user’s situation in human language.
-Reflect what you think the problem is, tentatively.
-Ask clarifying questions to remove ambiguity.
-Encourage the user to explain more if needed.
-
-Phase 2: Diagnosis
-Identify the real friction (visibility, trust, conversion, process, scale, etc.).
-Explain how this friction is affecting revenue, time, or growth.
-Avoid buzzwords. Use grounded logic.
-
-Phase 3: System Thinking
-Explain how a digital system (website, automation, design, editting, Ai, content flow, or combined system) would resolve the friction.
-Focus on outcomes, not tools.
-
-Phase 4: Proposal Preparation
-Once enough information is gathered, inform the user that you can summarize everything into a clear plan.
-Ask for confirmation to proceed with a structured summary.
-
-Final structured output (ONLY when triggered)
-When the user confirms they want a plan, produce a structured summary with the following sections:
-
-Your Core Problem
-A clear, concise description of what is not working.
-
-How This Is Affecting You
-Practical impact on revenue, growth, trust, or efficiency.
-
-What Needs to Be Built or Fixed
-Description of the digital system required (no tools mentioned).
-
-Proposed Plan
-Step-by-step approach in plain language.
-
-Timeline
-Realistic timeframe (e.g., 2–3 weeks, 4–6 weeks).
-
-Estimated Investment
-Honest pricing range (e.g., $1k–$3k, $5k–$10k, $10k+), with reasoning.
-
-What I Would Need From You
-Content, access, approvals, timelines, etc.
-
-Next Step
-Calmly state:
-“This is exactly the type of work I implement properly.”
-
-Tone & limits
-Never be salesy.
-Never exaggerate.
-Never pressure.
-Speak like a human on a serious strategy call.
-Keep each response concise and thoughtful.
-Do not exceed 150 words per turn unless generating the final structured summary.
-
-Before sending the summary, the user must enter their email and or phone number, to be contacted later. Then the summary and their contact details to be sent to me via email.`;
 
 export default function App() {
   const [businessChat, setBusinessChat] = useState<{role: 'user' | 'ai', text: string}[]>([]);
@@ -170,6 +110,12 @@ export default function App() {
   const [chatStage, setChatStage] = useState<'initial' | 'chatting'>('initial');
   const [isProblemsModalOpen, setIsProblemsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [clientId, setClientId] = useState('');
+  const [proposalVersion, setProposalVersion] = useState(1);
+  const [approvalStatus, setApprovalStatus] = useState<'idle' | 'approved' | 'rejected'>('idle');
+  const [webhookStatus, setWebhookStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [webhookMessage, setWebhookMessage] = useState('');
+  const [lastAiStatus, setLastAiStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const businessMessagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -180,11 +126,40 @@ export default function App() {
     scrollToBottom();
   }, [businessChat, isBusinessLoading]);
 
+  useEffect(() => {
+    const storedClientId = localStorage.getItem('wazimu_client_id');
+    if (storedClientId) {
+      setClientId(storedClientId);
+    } else {
+      const generatedId = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      localStorage.setItem('wazimu_client_id', generatedId);
+      setClientId(generatedId);
+    }
+
+    const storedVersion = Number(localStorage.getItem('wazimu_proposal_version') || '1');
+    setProposalVersion(Number.isFinite(storedVersion) && storedVersion > 0 ? storedVersion : 1);
+  }, []);
+
   const handleBusinessSubmit = async () => {
     if (!businessInput.trim()) return;
     
+    let activeClientId = clientId;
+    if (!activeClientId) {
+      activeClientId = typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? crypto.randomUUID()
+        : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      localStorage.setItem('wazimu_client_id', activeClientId);
+      setClientId(activeClientId);
+    }
+
     const userMsg = businessInput;
     setBusinessInput('');
+    setApprovalStatus('idle');
+    setWebhookStatus('idle');
+    setWebhookMessage('');
+    setLastAiStatus('idle');
     const newMessages = [...businessChat, { role: 'user' as const, text: userMsg }];
     setBusinessChat(newMessages);
     setIsBusinessLoading(true);
@@ -194,26 +169,28 @@ export default function App() {
     }
 
     try {
-      const contents = newMessages.map(m => ({
-        role: m.role === 'ai' ? 'model' : 'user',
-        parts: [{ text: m.text }]
-      }));
-
-      const response = await ai.models.generateContent({
-        model: 'gemini-2.5-flash',
-        contents: contents,
-        config: {
-          systemInstruction: SYSTEM_PROMPT,
-        }
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientId: activeClientId,
+          messages: newMessages
+        })
       });
 
-      const responseText = response.text || "";
-      
-      // Check if the response looks like the final summary
-      setBusinessChat(prev => [...prev, { role: 'ai', text: responseText }]);
+      const data = await response.json();
+      if (!response.ok) {
+        const errorMessage = data?.error || "Sorry, I'm having trouble connecting right now.";
+        setBusinessChat(prev => [...prev, { role: 'ai', text: errorMessage }]);
+        setLastAiStatus('error');
+      } else {
+        const responseText = data?.text || "";
+        setBusinessChat(prev => [...prev, { role: 'ai', text: responseText }]);
+        setLastAiStatus('success');
+      }
     } catch (error) {
-      console.error("Gemini Error:", error);
-      setBusinessChat(prev => [...prev, { role: 'ai', text: "Sorry, I'm having trouble connecting right now." }]);
+      setBusinessChat(prev => [...prev, { role: 'ai', text: "Server unreachable. Start npm run server and try again." }]);
+      setLastAiStatus('error');
     } finally {
       setIsBusinessLoading(false);
     }
@@ -223,6 +200,74 @@ export default function App() {
     navigator.clipboard.writeText('wazimucreations@gmail.com');
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  const latestAiMessage = [...businessChat].reverse().find(msg => msg.role === 'ai')?.text || '';
+  const approvalLabel = approvalStatus === 'approved' ? 'Approved' : approvalStatus === 'rejected' ? 'Rejected' : 'Pending';
+  const approvalClass = approvalStatus === 'approved'
+    ? 'bg-green-100 text-green-700'
+    : approvalStatus === 'rejected'
+    ? 'bg-red-100 text-red-700'
+    : 'bg-gray-100 text-gray-600';
+  const finalProposalSections = [
+    'Your Core Problem',
+    'How This Is Affecting You',
+    'What Needs to Be Built or Fixed',
+    'Proposed Plan',
+    'Timeline',
+    'Estimated Investment',
+    'What I Would Need From You',
+    'Next Step'
+  ];
+  const finalSectionMatches = finalProposalSections.filter(section => latestAiMessage.includes(section)).length;
+  const isFinalProposal = latestAiMessage.trim().length > 0 && finalSectionMatches >= 5;
+  const shouldShowApproval = lastAiStatus === 'success' && isFinalProposal;
+
+  const handleApproveProposal = async () => {
+    if (!latestAiMessage.trim() || approvalStatus === 'approved') return;
+    const confirmed = window.confirm('Approve this proposal and send it to Wazimu Creator?');
+    if (!confirmed) return;
+
+    setWebhookStatus('sending');
+    setWebhookMessage('');
+
+    try {
+      const response = await fetch('/api/proposal/approve', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          clientId,
+          proposalText: latestAiMessage,
+          proposalVersion
+        })
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        setWebhookStatus('error');
+      setWebhookMessage(data?.error || 'We could not finalize the approval. Please try again.');
+        return;
+      }
+
+      setApprovalStatus('approved');
+      setWebhookStatus('success');
+    setWebhookMessage('Proposal sent successfully. You will be reached in a few.');
+      const nextVersion = proposalVersion + 1;
+      setProposalVersion(nextVersion);
+      localStorage.setItem('wazimu_proposal_version', String(nextVersion));
+    } catch (error) {
+      setWebhookStatus('error');
+    setWebhookMessage('We could not finalize the approval. Please try again.');
+    }
+  };
+
+  const handleRejectProposal = () => {
+    if (!latestAiMessage.trim()) return;
+    const confirmed = window.confirm('Reject this proposal?');
+    if (!confirmed) return;
+    setApprovalStatus('rejected');
+    setWebhookStatus('idle');
+    setWebhookMessage('');
   };
 
   return (
@@ -240,7 +285,14 @@ export default function App() {
                   <button onClick={handleCopyEmail} className="px-3 md:px-4 py-1.5 bg-white rounded-full text-[10px] sm:text-xs font-medium shadow-sm hover:bg-gray-50 transition-colors cursor-pointer w-[60px] md:w-[68px]">
                     {isCopied ? 'Copied!' : 'Copy'}
                   </button>
-                  <button className="px-3 md:px-4 py-1.5 bg-white rounded-full text-[10px] sm:text-xs font-medium shadow-sm hover:bg-gray-50 transition-colors cursor-pointer">CV</button>
+                  <a
+                    href="https://flowcv.com/resume/7fwcwmo01w70"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 md:px-4 py-1.5 bg-white rounded-full text-[10px] sm:text-xs font-medium shadow-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                  >
+                    CV
+                  </a>
                 </div>
               </div>
               <div className="flex items-center gap-3 md:gap-4 text-xs md:text-sm font-medium">
@@ -256,7 +308,7 @@ export default function App() {
             <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
               <div className="relative mb-10">
                 <img 
-                  src="https://drive.google.com/file/d/1b8YnG1xKZZm8wJnaMAlYw1O4FBIRcyls/" 
+                  src="/wzm.gif" 
                   alt="Profile" 
                   className="w-24 h-24 rounded-full object-cover border-4 border-[#F4F4F5]"
                   referrerPolicy="no-referrer"
@@ -329,22 +381,55 @@ export default function App() {
                     </div>
 
                     {chatStage === 'chatting' && (
-                      <div className="flex gap-2 mt-2">
-                        <input 
-                          type="text" 
-                          value={businessInput}
-                          onChange={(e) => setBusinessInput(e.target.value)}
-                          onKeyDown={(e) => e.key === 'Enter' && handleBusinessSubmit()}
-                          placeholder="Type your answer..."
-                          className="flex-1 bg-white border-none rounded-full px-5 py-3 text-sm focus:ring-2 focus:ring-black outline-none"
-                        />
-                        <button 
-                          onClick={handleBusinessSubmit}
-                          disabled={isBusinessLoading || !businessInput.trim()}
-                          className="bg-[#1a1a1a] text-white p-3 rounded-full disabled:opacity-50 hover:bg-black transition-colors cursor-pointer flex items-center justify-center w-12 h-12"
-                        >
-                          <Send className="w-4 h-4" />
-                        </button>
+                      <div className="flex flex-col gap-4 mt-2">
+                        <div className="flex gap-2">
+                          <textarea 
+                            value={businessInput}
+                            onChange={(e) => setBusinessInput(e.target.value)}
+                            placeholder="Type your answer..."
+                            rows={2}
+                            className="flex-1 bg-white border-none rounded-2xl px-5 py-3 text-sm focus:ring-2 focus:ring-black outline-none resize-none"
+                          />
+                          <button 
+                            onClick={handleBusinessSubmit}
+                            disabled={isBusinessLoading || !businessInput.trim()}
+                            className="bg-[#1a1a1a] text-white p-3 rounded-full disabled:opacity-50 hover:bg-black transition-colors cursor-pointer flex items-center justify-center w-12 h-12"
+                          >
+                            <Send className="w-4 h-4" />
+                          </button>
+                        </div>
+                        {shouldShowApproval && (
+                          <div className="bg-white rounded-2xl p-5 shadow-sm border border-gray-100">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
+                              <h3 className="text-sm font-semibold text-gray-900">Final Proposal</h3>
+                              <span className={`text-xs font-medium px-3 py-1 rounded-full ${approvalClass}`}>{approvalLabel}</span>
+                            </div>
+                            <div className="bg-[#F4F4F5] rounded-xl p-4 text-sm text-gray-700 whitespace-pre-wrap">
+                              {latestAiMessage}
+                            </div>
+                            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+                              <button
+                                onClick={handleApproveProposal}
+                                disabled={approvalStatus === 'approved' || webhookStatus === 'sending'}
+                                className="flex-1 bg-[#1a1a1a] text-white px-4 py-3 rounded-full text-sm font-medium disabled:opacity-50 hover:bg-black transition-colors"
+                              >
+                                {webhookStatus === 'sending' ? 'Sending...' : 'Approve Proposal'}
+                              </button>
+                              <button
+                                onClick={handleRejectProposal}
+                                disabled={approvalStatus === 'rejected' || webhookStatus === 'sending'}
+                                className="flex-1 bg-white text-gray-700 px-4 py-3 rounded-full text-sm font-medium border border-gray-200 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                              >
+                                Reject Proposal
+                              </button>
+                            </div>
+                            {webhookStatus !== 'idle' && (
+                              <div className={`mt-3 text-xs font-medium ${webhookStatus === 'success' ? 'text-green-700' : webhookStatus === 'error' ? 'text-red-700' : 'text-gray-600'}`}>
+                                {webhookMessage || (webhookStatus === 'sending' ? 'Finalizing your approval...' : '')}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     )}
                   </div>
@@ -533,7 +618,7 @@ export default function App() {
             <footer className="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 border-t border-gray-100">
               <p className="text-xs text-gray-500 font-medium">© 2026 All rights reserved.</p>
               <div className="flex items-center gap-3 md:gap-4 text-xs font-medium text-gray-500">
-                <a href="https://wa.me/0790295408" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">Whatsapp</a>
+                <a href="https://wa.me/254790295408?text=Hello%2C%20I%27m%20reaching%20out%20because%20my%20business%20is%20experiencing%20digital%20challenges%20and%20I%20would%20like%20to%20discuss%20how%20we%20can%20fix%20them.%20I%27m%20ready%20to%20implement%20a%20proper%20solution." target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">Whatsapp</a>
                 <span className="text-gray-300">/</span>
                 <a href="https://discord.gg/2ayU7ZdR" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">Discord</a>
                 <span className="text-gray-300">/</span>

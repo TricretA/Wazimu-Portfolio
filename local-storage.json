@@ -1,0 +1,42 @@
+{
+  "rateLimits": {
+    "2026-02-23": {
+      "user": {
+        "ef826c64-a4eb-4694-972a-1cfa327b1b71": 5
+      },
+      "global": 5
+    }
+  },
+  "webhookLogs": [
+    {
+      "timestamp": "2026-02-23T20:03:55.837Z",
+      "clientId": "ef826c64-a4eb-4694-972a-1cfa327b1b71",
+      "proposalVersion": 1,
+      "status": "success",
+      "attempt": 1,
+      "responseCode": 200,
+      "errorMessage": null,
+      "payload": {
+        "timestamp": "2026-02-23T20:03:51.801Z",
+        "clientId": "ef826c64-a4eb-4694-972a-1cfa327b1b71",
+        "proposalVersion": 1,
+        "proposal": "Thank you for providing your contact information.\n\nHere is the structured proposal based on your needs:\n\n---\n\n**Your Core Problem**\nYou lack a dedicated digital presence to showcase your comprehensive plumbing services, relying solely on social media for visibility. This limits discoverability and the professional presentation of your business.\n\n**How This Is Affecting You**\nWithout a professional website, potential customers may struggle to find detailed information about your services, verify your credibility, or easily contact you. This can result in missed lead opportunities and slower business growth compared to competitors with established online platforms.\n\n**What Needs to Be Built or Fixed**\nA professional, responsive website needs to be built. This system will feature dedicated pages for your plumbing services, a clear mechanism for customer contact, a visual display of your work, and testimonials to build trust.\n\n**Proposed Plan**\n1.  **Foundation & Design:** Set up the website structure and design a clean, user-friendly interface using your Facebook photos as a starting point.\n2.  **Content Creation:** Develop compelling service descriptions for all your plumbing offerings. Integrate essential elements like a contact form, service gallery, and placeholder sections for future testimonials.\n3.  **Review & Refine:** Present the draft website for your feedback and make necessary adjustments to ensure it aligns with your vision.\n4.  **Launch:** Deploy the website, making it accessible to your customers.\n\n**Timeline**\n2 weeks\n\n**Estimated Investment**\nAs low as $1200 upwards. This range accounts for the foundational setup, professional content development based on your services, design, and a standard set of features like a contact form and service gallery. The final cost depends on the specific level of customization and content polish required.\n\n**What I Would Need From You**\n*   Access to your existing Facebook photos.\n*   Timely feedback on design and content drafts to maintain the 2-week timeline.\n*   Any specific service details or unique selling points you'd like to highlight.\n\n**Next Step**\nThis is exactly the type of work I implement properly.\n\nYour contact details:\nEmail: rainhard boonke@gmail.com\nPhone: 0720000000\n\nThis summary and your contact details will be sent to me via email for follow-up."
+      }
+    },
+    {
+      "timestamp": "2026-02-23T20:34:08.686Z",
+      "clientId": "test-client",
+      "proposalVersion": 1,
+      "status": "success",
+      "attempt": 1,
+      "responseCode": 200,
+      "errorMessage": null,
+      "payload": {
+        "timestamp": "2026-02-23T20:34:07.062Z",
+        "clientId": "test-client",
+        "proposalVersion": 1,
+        "proposal": "Your Core Problem\nClient inquiries are not converting because the proposal flow is unclear and slow.\n\nHow This Is Affecting You\nLost leads and delayed decisions reduce monthly revenue and trust.\n\nWhat Needs to Be Built or Fixed\nA clear proposal flow with approval, concise follow-up, and automated delivery.\n\nProposed Plan\n1. Review current flow and align messaging.\n2. Implement approval flow and client-ready messaging.\n3. Deliver a formatted proposal and confirmation handoff.\n\nTimeline\n5 business days from kickoff.\n\nEstimated Investment\nKES 75,000.\n\nWhat I Would Need From You\nBusiness details, brand references, and one decision point for approval.\n\nNext Step\nThis is exactly the type of work I implement properly.\n\nContact Details\nEmail: wazimucreations@gmail.com"
+      }
+    }
+  ]
+}
