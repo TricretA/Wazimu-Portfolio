@@ -8,11 +8,6 @@ import { GoogleGenAI } from '@google/genai';
 dotenv.config({ path: '.env.local' });
 dotenv.config();
 
-if (!process.env.GEMINI_API_KEY) {
-  console.error('GEMINI_API_KEY is required');
-  process.exit(1);
-}
-
 const app = express();
 app.use(express.json({ limit: '2mb' }));
 
@@ -23,7 +18,9 @@ const storagePath = path.join(__dirname, 'local-storage.json');
 const USER_LIMIT = 10;
 const GLOBAL_LIMIT = 40;
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+const ai = process.env.GEMINI_API_KEY
+  ? new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY })
+  : null;
 
 const SYSTEM_PROMPT = `You are a calm, highly competent digital problem-solver who thinks in systems, not services.
 
@@ -288,7 +285,7 @@ app.post('/api/chat', async (req, res) => {
       parts: [{ text: message.text }]
     }));
 
-    const response = await ai.models.generateContent({
+    const response = await ai!.models.generateContent({
       model: 'gemini-2.5-flash',
       contents,
       config: {
@@ -298,6 +295,12 @@ app.post('/api/chat', async (req, res) => {
 
     return res.json({ text: response.text || '' });
   } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (message.includes('API_KEY_INVALID') || message.includes('API Key not found')) {
+      return res.status(500).json({ error: 'Gemini API key is invalid. Update GEMINI_API_KEY in .env.local.' });
+    }
+
     return res.status(500).json({ error: 'AI response failed. Please try again.' });
   }
 });
@@ -336,4 +339,8 @@ app.post('/api/proposal/approve', async (req, res) => {
 });
 
 const port = Number(process.env.PORT) || 3001;
-app.listen(port);
+const host = process.env.HOST || '0.0.0.0';
+
+app.listen(port, host, () => {
+  console.log(`API server listening on http://${host}:${port}`);
+});

@@ -5,6 +5,14 @@
         "ef826c64-a4eb-4694-972a-1cfa327b1b71": 5
       },
       "global": 5
+    },
+    "2026-03-31": {
+      "user": {
+        "test-client": 7,
+        "c2a9d338-84f3-49c3-a64b-a624c3ab2de7": 10,
+        "858c5502-4e2a-4a3a-94d9-72dcda2e60c2": 1
+      },
+      "global": 18
     }
   },
   "webhookLogs": [
