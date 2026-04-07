@@ -1,129 +1,220 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { ArrowUpRight, Mail, Send, CheckCircle2, Monitor, Smartphone, PenTool, Video, Zap, Brain, X, Linkedin, Twitter, Instagram } from 'lucide-react';
+import { ArrowUpRight, Mail, Send, CheckCircle2, Monitor, Smartphone, PenTool, Video, Zap, Brain, X, Linkedin, Twitter, Instagram, Search } from 'lucide-react';
+import { FaWhatsapp } from 'react-icons/fa';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { FadeUp, StaggerContainer, StaggerItem } from './components/Animations';
 import Thoughts from './components/Thoughts';
 
-const solvedProblems = [
+export type ServiceCategory = 'All' | 'Websites' | 'Mobile Apps' | 'Design' | 'Automation' | 'Video Editing' | 'AI';
+
+interface SolvedProblem {
+  title: string;
+  problem: string;
+  solution: string;
+  outcome: string;
+  link: string | null;
+  linkText: string | null;
+  category: ServiceCategory;
+}
+
+const solvedProblems: SolvedProblem[] = [
   {
-    title: "1. KUCCPS Course Checker",
+    title: "KUCCPS Course Checker",
     problem: "Students struggled to understand KUCCPS placement options. The official information was complex, static, and overwhelming. Many made blind course decisions without clarity on qualifications, competitiveness, or real-world implications.",
     solution: "Built an intelligent course-checking system that analyzes grades, explains eligibility clearly, and provides structured, simplified feedback. Added guided explanations and downloadable results to reduce confusion and improve decision-making.",
     outcome: "Reduced student confusion by 80% and increased successful placements.",
     link: "https://kuccpscoursechecker.co.ke",
-    linkText: "KUCCPS Course Checker"
+    linkText: "KUCCPS Course Checker",
+    category: "Websites"
   },
   {
-    title: "2. Bingwa Posters",
+    title: "Bingwa Posters",
     problem: "Agents and small businesses needed promotional posters constantly, but design was slow, inconsistent, and dependent on designers. This delayed marketing and reduced agility.",
     solution: "Built an automated poster-generation system where agents can instantly generate branded promotional posters using structured templates. The system removes dependency, ensures brand consistency, and speeds up marketing execution.",
     outcome: "Saved 10+ hours per week on design and maintained 100% brand consistency.",
     link: "https://bingwaposters.vercel.app",
-    linkText: "Bingwa Posters"
+    linkText: "Bingwa Posters",
+    category: "Automation"
   },
   {
-    title: "3. SciDraft",
+    title: "SciDraft",
     problem: "Students and institutions struggled to structure scientific lab reports properly. Manual formatting caused inconsistency, time waste, and academic errors.",
     solution: "Developed an AI-powered lab report system that converts structured input into academically formatted drafts. It enforces logical structure, standard formatting, and reduces repetitive academic writing friction.",
     outcome: "Cut formatting time by 90% and improved academic grading consistency.",
     link: "https://scidraft.vercel.app",
-    linkText: "SciDraft"
+    linkText: "SciDraft",
+    category: "AI"
   },
   {
-    title: "4. Compassion PDF System",
+    title: "Compassion PDF System",
     problem: "Child Development Centers manually tracked weekly contributions. Balances were inaccurate, notifications were inconsistent, and administrators spent excessive time managing records.",
     solution: "Built a structured digital contribution system that automates balance tracking, records payments accurately, and enables structured notifications. The system reduces manual errors and improves financial transparency.",
     outcome: "Eliminated manual tracking errors and increased financial transparency.",
     link: null,
-    linkText: null
+    linkText: null,
+    category: "Automation"
   },
   {
-    title: "5. White Barn (Luxury Scents & Home Accents – New York)",
+    title: "White Barn (Luxury Scents & Home Accents – New York)",
     problem: "A premium physical store selling luxurious scents and curated home accents had zero online presence. Customers searching online couldn’t find them. High-end branding existed offline, but digitally they were invisible — quietly losing potential buyers.",
     solution: "Built a refined, conversion-focused website that reflects the brand’s elegance and allows customers to discover products, explore collections, and connect directly. The system ensured they no longer lost online traffic and could convert interest into sales beyond foot traffic.",
     outcome: "Established premium digital presence and opened a new online sales channel.",
     link: "https://white-barn.netlify.app",
-    linkText: "White Barn"
+    linkText: "White Barn",
+    category: "Websites"
   },
   {
-    title: "6. Bangin Hair BK (Salon – New York)",
+    title: "Bangin Hair BK (Salon – New York)",
     problem: "A salon known for masterful cuts and transformative color had strong word-of-mouth reputation but no digital presence. New clients couldn’t preview services or validate credibility online.",
     solution: "Created a clean, visually expressive website showcasing services, style quality, and brand personality. The system positioned the salon professionally online, making discovery, trust-building, and client conversion seamless.",
     outcome: "Increased online bookings and validated brand credibility to new clients.",
     link: "https://banginhairbk.netlify.app",
-    linkText: "Bangin Hair BK"
+    linkText: "Bangin Hair BK",
+    category: "Websites"
   },
   {
-    title: "7. Morning Glory Restaurant (Australia)",
+    title: "7.  Morning Glory Restaurant (Australia)",
     problem: "A restaurant with strong local reputation and unforgettable cuisine had no website. Visitors and tourists searching online had no official reference point — losing reservation and walk-in opportunities.",
     solution: "Developed a modern, mobile-first website presenting the menu, ambiance, and contact details clearly. The system ensures customers can discover, evaluate, and plan visits without friction.",
     outcome: "Captured lost search traffic and increased walk-in reservations.",
     link: "https://morninggloryrestaurant.netlify.app",
-    linkText: "Morning Glory Restaurant"
+    linkText: "Morning Glory Restaurant",
+    category: "Websites"
   },
   {
-    title: "8. Polyclinique (Hospital – Tunisia)",
+    title: "Polyclinique (Hospital – Tunisia)",
     problem: "A large hospital serving Hammam-Lif since 2012 lacked a structured digital interface. Patients needed reliable access to information about services, departments, and care without inconvenience.",
     solution: "Built a structured medical website prioritizing clarity, trust, and accessibility. The system organizes medical services and essential information clearly, ensuring patients can navigate care confidently.",
     outcome: "Streamlined patient onboarding and built digital trust.",
     link: "https://polyclinique.netlify.app",
-    linkText: "Polyclinique"
+    linkText: "Polyclinique",
+    category: "Websites"
   },
   {
-    title: "9. Garden Specialist Hospital (Nairobi)",
+    title: "Garden Specialist Hospital (Nairobi)",
     problem: "A specialized healthcare provider required a digital platform reflecting excellence and professionalism. Without a structured website, patients lacked a centralized source of medical information.",
     solution: "Designed and implemented a clear, professional healthcare website that communicates specialization, trust, and authority while guiding patients efficiently to relevant services.",
     outcome: "Centralized medical information and improved patient acquisition.",
     link: "https://gardenspecialist.netlify.app",
-    linkText: "Garden Specialist Hospital"
+    linkText: "Garden Specialist Hospital",
+    category: "Websites"
   },
   {
-    title: "10. Lee Funeral Home (Nairobi)",
+    title: "Lee Funeral Home (Nairobi)",
     problem: "A long-established, premium funeral home had a non-functional WordPress website. In moments when families needed immediate guidance, the digital system failed them.",
     solution: "Rebuilt and stabilized the website infrastructure, adding structured service pathways such as Immediate Support, Plan Ahead, Repatriation, and Cremation. The new system ensures families can access help quickly and clearly during critical moments.",
     outcome: "Provided reliable 24/7 digital support during critical family moments.",
     link: "https://leefuneralhome.netlify.app",
-    linkText: "Lee Funeral Home"
+    linkText: "Lee Funeral Home",
+    category: "Websites"
   },
   {
-    title: "11. Valentine",
+    title: "Valentine",
     problem: "Teenager or people in love are used to oral proposals. Patners underestimate the effort of their loved ones",
     solution: "Built a lovely valentime mobile app that allows users to send valentines messages to their loved ones. This makes love surprise and different.",
     outcome: "Delivered a unique, personalized digital experience for users.",
     link: "https://be-my-valentine-wc.vercel.app/",
-    linkText: "Valentine"
+    linkText: "Valentine",
+    category: "Mobile Apps"
   },
   {
-    title: "12. Whatsapp Bundles Sale Automation",
+    title: "Whatsapp Bundles Sale Automation",
     problem: "A business needed to automate the sale of bundles on WhatsApp, saving time and increasing sales.",
     solution: "Developed a custom WhatsApp bot that allows users to buy bundles directly from Whatsapp. The bot is integrated with the business's inventory system, and Mpesa for payments.",
     outcome: "Saved hours of manual selling of bundles daily and ensured 0 missed sales.",
     link: "https://wa.me/254790295408?text=Bfasta",
-    linkText: "Whatsapp Sale Automation"
+    linkText: "Whatsapp Sale Automation",
+    category: "Automation"
   },
   {
-    title: "13. Lorem Productions (Film Production Company)",
+    title: "Lorem Productions (Film Production Company)",
     problem: "A filming company experienced low social media engagement due to weak editing structure and inconsistent video quality.",
     solution: "Re-edited and restructured their visual content professionally, enhancing pacing, clarity, and storytelling. The improved production quality increased audience engagement and strengthened brand perception online.",
     outcome: "Boosted audience engagement and strengthened professional brand perception.",
     link: "https://youtu.be/lGw6ix1Mydk?si=uzJjdWEUs8vOoqtf",
-    linkText: "Lorem Productions"
+    linkText: "Lorem Productions",
+    category: "Video Editing"
   },
   {
-    title: "14. Tech Haven",
+  title: "AI WhatsApp Customer Service Agent for SMEs",
+  problem: "Over 80% of Kenyan SMEs handle customer inquiries manually on WhatsApp — a time sink that loses leads, creates inconsistency, and doesn't scale. Delayed responses cost businesses customers daily.",
+  solution: "Built an AI-powered WhatsApp automation system that handles customer inquiries 24/7, qualifies leads, answers FAQs, and escalates complex issues to human agents. Integrated with business catalogs and M-Pesa for end-to-end sales completion without human involvement.",
+  outcome: "Reduced response time from hours to under 3 seconds. Clients reported 60% fewer missed leads and eliminated the need for a dedicated customer service hire.",
+  link: "https://bfasta.vercel.app",
+  linkText: "Skylink Bundlefasta – Live Demo",
+  category: "Automation"
+},
+{
+  title: "AI Legal Guidance Platform for Common Kenyan Legal Issues",
+  problem: "Access to legal advice is a luxury in Kenya. A basic consultation costs KSh 5,000–20,000. Most Kenyans cannot afford to challenge unlawful evictions, employment disputes, or land grabs.",
+  solution: "Built an AI-powered platform trained on Kenyan law — Employment Act, Land Act, Tenant Protection guidelines — that provides plain-language legal guidance, generates demand letters, and maps users to relevant legal aid organizations based on their specific situation.",
+  outcome: "Democratized access to basic legal knowledge for users who would otherwise have no recourse. Platform handles 15+ common legal scenarios with jurisdiction-accurate guidance.",
+  link: "#",
+  linkText: "AI Legal Guidance Platform",
+  category: "AI"
+},
+{
+  title: "AI-Powered CV Screening & Talent Matching for Kenyan HR Firms",
+  problem: "Kenyan HR firms and corporate recruitment teams manually sift through hundreds to thousands of CVs per open position. This takes weeks, introduces significant human bias, and delays time-to-hire for critical roles.",
+  solution: "Built an AI recruitment pipeline that ingests CVs in bulk, scores candidates against job description criteria, flags top matches with structured reasoning, and generates interview shortlists in minutes. Integrated with email for automated candidate communication.",
+  outcome: "Reduced screening time from 2 weeks to under 2 hours. Eliminated manual ranking bias and cut cost-per-hire significantly for pilot HR clients.",
+  link: "#",
+  linkText: "AI CV Screening System",
+  category: "AI"
+},
+{
+  title: "AI Inventory & Restocking System for Dukas",
+  problem: "Kenya has 3M+ small retail shops. Over 90% have no inventory tracking. Stockouts and overstock are daily losses. Owners reorder based on gut feel, often from multiple suppliers with no price comparison.",
+  solution: "Built a mobile-first inventory system where shop owners log stock via simple inputs or barcode scan. AI tracks consumption patterns, predicts restocking dates, compares supplier pricing, and sends WhatsApp alerts before items run out. Works fully offline with sync when connected.",
+  outcome: "Pilot shops reduced stockouts by 70% and identified 15–20% cost savings through supplier price comparison. Owners recovered an estimated KSh 8,000–15,000 monthly in previously invisible losses.",
+  link: "#",
+  linkText: "Duka AI Inventory System",
+  category: "Mobile Apps"
+},
+{
+  title: "M-Pesa Business Dashboard",
+  problem: "Small business owners in Kenya receive dozens of M-Pesa transactions daily but have no way to analyze them. Manual bookkeeping is time-consuming, error-prone, and gives no real financial picture.",
+  solution: "Built an Android app that reads M-Pesa SMS confirmations directly from the device, auto-categorizes transactions as income or expenses, and generates clean daily, weekly, and monthly dashboards. No manual data entry. No internet required.",
+  outcome: "Business owners gained their first clear view of cash flow without hiring an accountant. App surfaces patterns like peak sales days and recurring expenses that were previously invisible.",
+  link: "#",
+  linkText: "M-Pesa Business Dashboard",
+  category: "Mobile Apps"
+},
+{
+  title: "Tenant Rent Tracker",
+  problem: "Landlords managing multiple rental units in Kenya operate entirely from memory and notebooks. Tracking arrears, sending reminders, and knowing who has paid at month-end is manual, error-prone, and confrontational.",
+  solution: "Built a mobile landlord management app where property owners add tenants, log monthly payments, flag arrears automatically, and send WhatsApp payment reminders in one tap. All data stored locally on device — no subscription, no cloud dependency.",
+  outcome: "Landlords eliminated missed arrear tracking and reduced awkward debt follow-ups. WhatsApp reminder feature alone saved an estimated 3–4 hours per month per landlord.",
+  link: "#",
+  linkText: "Tenant Rent Tracker",
+  category: "Mobile Apps"
+},
+{
+  title: "AI Mockup Generator for Designers",
+  problem: "Designers waste significant time placing artwork into device and product mockups manually in Photoshop. Client presentations require multiple mockup variations. The process is repetitive and slows down delivery.",
+  solution: "Built a mobile app where designers upload their design file and select a mockup template — phone screens, t-shirts, billboards, packaging. AI automatically fits, warps, and blends the design into the mockup with realistic lighting and shadows. Export-ready in seconds.",
+  outcome: "Reduced mockup creation time from 20–30 minutes per variation to under 60 seconds. Designers can generate full client presentation decks on mobile without touching a desktop.",
+  link: "#",
+  linkText: "AI Mockup Generator",
+  category: "Mobile Apps"
+},
+{
+    title: "Tech Haven",
     problem: "A professional high-end cyber cafe lacked professionalism because of lack of brand visibility and customer service.",
     solution: "Enhanced brand visibility through designing a uniques remarkable logo. This improved their brand awareness and strengthened customer loyalty.",
     outcome: "Elevated brand visibility and attracted higher-end clientele.",
     link: "https://drive.google.com/file/d/1GdAphvWmDZHAMyx5yJn13YKZ8NyE73pT/",
-    linkText: "Tech Haven"
+    linkText: "Tech Haven",
+    category: "Design"
   },
   {
-    title: "15. Skylink Hotel",
+    title: "Skylink Hotel",
     problem: "A well known remarkable Hotel in Kisii, lacked a well designed Menu to showcase their food and services.",
     solution: "Designed a visually appealing and user-friendly menu that highlights the hotel's unique offerings. This made their customers well satisfied, allowing guests to quickly find the items they are interested in.",
     outcome: "Improved guest satisfaction and streamlined the ordering process.",
     link: "https://drive.google.com/file/d/1qAhlf3zXhbb40ijD45fiTJrHvUs8nEuk/",
-    linkText: "Skylink Hotel"
+    linkText: "Skylink Hotel",
+    category: "Design"
   }
 ];
 
@@ -209,6 +300,17 @@ export default function App() {
   const [isIdle, setIsIdle] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+
+  const [activeCategory, setActiveCategory] = useState<ServiceCategory>('All');
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const filteredProblems = solvedProblems.filter(project => {
+    const matchesCategory = activeCategory === 'All' || project.category === activeCategory;
+    const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                         project.problem.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         project.solution.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   useEffect(() => {
     let idleTimeout: ReturnType<typeof setTimeout>;
@@ -488,7 +590,7 @@ export default function App() {
 
               <StaggerItem className="mt-10 text-xs font-medium text-gray-500 uppercase tracking-wider flex items-center gap-2">
                 <div className="w-8 h-px bg-gray-300"></div>
-                Trusted by 12+ businesses across Kenya
+                Trusted by 12+ businesses across East Africa
                 <div className="w-8 h-px bg-gray-300"></div>
               </StaggerItem>
             </StaggerContainer>
@@ -852,56 +954,124 @@ export default function App() {
                 exit={{ scale: 0.95, opacity: 0, y: 20 }}
                 transition={{ duration: 0.25, ease: "easeOut" }}
                 onClick={(e) => e.stopPropagation()}
-                className="bg-[#F4F4F5] w-full max-w-4xl max-h-[85vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl"
+                className="bg-[#F4F4F5] w-full max-w-5xl h-[90vh] rounded-3xl overflow-hidden flex flex-col shadow-2xl"
               >
-                <div className="bg-white p-6 flex justify-between items-center border-b border-gray-100">
-                  <h2 className="text-2xl font-semibold tracking-tight">Problems Solved</h2>
-                  <button 
-                    onClick={() => setIsProblemsModalOpen(false)}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
-                  >
-                    <X className="w-5 h-5 text-gray-500" />
-                  </button>
+                <div className="bg-white p-4 md:p-6 border-b border-gray-100 z-10 flex-shrink-0">
+                  <div className="flex justify-between items-center mb-4 md:mb-6">
+                    <h2 className="text-xl md:text-2xl font-semibold tracking-tight">Problems Solved</h2>
+                    <button 
+                      onClick={() => setIsProblemsModalOpen(false)}
+                      className="p-2 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+                    >
+                      <X className="w-5 h-5 text-gray-500" />
+                    </button>
+                  </div>
+                  
+                  {/* Category Navigation & Search */}
+                  <div className="flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+                    <div className="flex overflow-x-auto pb-2 -mb-2 w-full md:w-auto hide-scrollbar gap-2">
+                      {(['All', 'Websites', 'Mobile Apps', 'Design', 'Automation', 'Video Editing', 'AI'] as ServiceCategory[]).map(category => (
+                        <button
+                          key={category}
+                          onClick={() => setActiveCategory(category)}
+                          className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all cursor-pointer ${
+                            activeCategory === category 
+                              ? 'bg-[#1a1a1a] text-white shadow-md' 
+                              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          }`}
+                        >
+                          {category}
+                        </button>
+                      ))}
+                    </div>
+                    <div className="relative w-full md:w-64 flex-shrink-0">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <Search className="h-4 w-4 text-gray-400" />
+                      </div>
+                      <input
+                        type="text"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        placeholder="Search projects..."
+                        className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-full text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent bg-gray-50"
+                      />
+                    </div>
+                  </div>
                 </div>
                 
-                <div className="p-6 overflow-y-auto flex-1">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {solvedProblems.map((project, idx) => (
-                      <div key={idx} className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
-                        <h3 className="font-semibold text-lg mb-4 text-gray-900">{project.title}</h3>
-                        
-                        <div className="mb-4 flex-1">
-                          <div className="bg-red-50/50 p-4 rounded-xl mb-3 border border-red-100/50">
-                            <span className="text-xs font-bold uppercase tracking-wider text-red-600 mb-1.5 block">Problem</span>
-                            <p className="text-sm font-semibold text-red-900/80 leading-relaxed">{project.problem}</p>
-                          </div>
-                          
-                          <div className="bg-green-50/50 p-4 rounded-xl mb-3 border border-green-100/50">
-                            <span className="text-xs font-bold uppercase tracking-wider text-green-600 mb-1.5 block">Solution</span>
-                            <p className="text-sm font-semibold text-green-900/80 leading-relaxed">{project.solution}</p>
-                          </div>
+                <div className="p-4 md:p-6 overflow-y-auto flex-1 custom-scrollbar">
+                  {filteredProblems.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      <AnimatePresence mode="popLayout">
+                        {filteredProblems.map((project, idx) => (
+                          <motion.div 
+                            key={project.title}
+                            layout
+                            initial={{ opacity: 0, scale: 0.9 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.9 }}
+                            transition={{ duration: 0.2 }}
+                            className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition-shadow group"
+                          >
+                            <div className="mb-3 flex justify-between items-start gap-2">
+                              <h3 className="font-semibold text-base text-gray-900 leading-snug">{project.title}</h3>
+                              <span className="text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-600 px-2 py-1 rounded flex-shrink-0">
+                                {project.category}
+                              </span>
+                            </div>
+                            
+                            <div className="mb-4 flex-1 space-y-3">
+                              <div className="bg-red-50/50 p-3.5 rounded-xl border border-red-100/50 transition-colors group-hover:bg-red-50">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-red-600 mb-1.5 block flex items-center gap-1">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-red-500"></div> Problem
+                                </span>
+                                <p className="text-xs font-medium text-red-900/80 leading-relaxed line-clamp-4">{project.problem}</p>
+                              </div>
+                              
+                              <div className="bg-green-50/50 p-3.5 rounded-xl border border-green-100/50 transition-colors group-hover:bg-green-50">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-green-600 mb-1.5 block flex items-center gap-1">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-green-500"></div> Solution
+                                </span>
+                                <p className="text-xs font-medium text-green-900/80 leading-relaxed line-clamp-4">{project.solution}</p>
+                              </div>
 
-                          <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100/50">
-                            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 mb-1.5 block">Outcome / Key Metrics</span>
-                            <p className="text-sm text-blue-900/80 leading-relaxed">{project.outcome}</p>
-                          </div>
-                        </div>
+                              <div className="bg-blue-50/50 p-3.5 rounded-xl border border-blue-100/50 transition-colors group-hover:bg-blue-50">
+                                <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 mb-1.5 block flex items-center gap-1">
+                                  <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div> Outcome
+                                </span>
+                                <p className="text-xs font-medium text-blue-900/80 leading-relaxed">{project.outcome}</p>
+                              </div>
+                            </div>
 
-                        {project.link && (
-                          <div className="mt-auto pt-4 border-t border-gray-50">
-                            <a 
-                              href={project.link} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-sm font-bold text-gray-800 hover:text-black transition-colors"
-                            >
-                              Link to proof <ArrowUpRight className="w-3.5 h-3.5" />
-                            </a>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                            {project.link && (
+                              <div className="mt-auto pt-3 border-t border-gray-50">
+                                <a 
+                                  href={project.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="inline-flex items-center gap-1.5 text-xs font-bold text-gray-500 hover:text-black transition-colors"
+                                >
+                                  Link to proof <ArrowUpRight className="w-3 h-3" />
+                                </a>
+                              </div>
+                            )}
+                          </motion.div>
+                        ))}
+                      </AnimatePresence>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center h-full text-gray-500 py-20">
+                      <Search className="w-12 h-12 mb-4 opacity-20" />
+                      <p className="text-lg font-medium">No projects found</p>
+                      <p className="text-sm">Try adjusting your search or category filter.</p>
+                      <button 
+                        onClick={() => { setSearchQuery(''); setActiveCategory('All'); }}
+                        className="mt-6 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full text-sm font-medium transition-colors cursor-pointer"
+                      >
+                        Clear Filters
+                      </button>
+                    </div>
+                  )}
                 </div>
               </motion.div>
             </motion.div>
