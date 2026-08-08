@@ -64,7 +64,15 @@ export default function SiteHeader({ onOpenAbout }: Props) {
           scrolled ? 'glass-bar px-4 py-2.5' : 'px-4 py-3.5'
         }`}
       >
-        <div className="flex items-center justify-between gap-4">
+        <div className="relative flex items-center justify-between gap-4">
+          {/*
+            Mobile only: the logo carries no name at that width, so the name
+            gets its own centred slot instead of sitting next to the mark.
+          */}
+          <div className="pointer-events-none absolute left-1/2 top-1/2 max-w-[50%] -translate-x-1/2 -translate-y-1/2 truncate text-center text-[0.92rem] font-bold tracking-tight sm:hidden">
+            {site.name}
+          </div>
+
           {/* Identity */}
           <div className="flex min-w-0 items-center gap-3">
             <a href="#top" aria-label="Back to top" className="flex-shrink-0">
