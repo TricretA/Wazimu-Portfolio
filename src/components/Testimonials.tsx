@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowUpRight } from 'lucide-react';
 import {
@@ -71,8 +72,24 @@ function Card({ item }: { item: Testimonial }) {
 
 export default function Testimonials() {
   const reduce = useReducedMotion();
-  // Duplicated once so the -50% keyframe loops seamlessly.
-  const track = [...testimonials, ...testimonials];
+  const scrollerRef = useRef<HTMLDivElement>(null);
+
+  // Mouse wheels only report deltaY, so without this a vertical scroll does
+  // nothing here and the row reads as static. Trackpad/touch already send a
+  // real deltaX and pass straight through untouched.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const onWheel = (event: WheelEvent) => {
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      el.scrollLeft += event.deltaY;
+      event.preventDefault();
+    };
+
+    el.addEventListener('wheel', onWheel, { passive: false });
+    return () => el.removeEventListener('wheel', onWheel);
+  }, []);
 
   return (
     <section id="clients" className="section-band section-divider relative">
@@ -88,12 +105,10 @@ export default function Testimonials() {
         </motion.div>
       </div>
 
-      <div className="marquee-viewport mt-14">
-        <div className="marquee-track hue-cycle">
-          {track.map((item, index) => (
-            <Card key={`${item.projectSlug}-${index}`} item={item} />
-          ))}
-        </div>
+      <div ref={scrollerRef} className="scroll-row custom-scrollbar hue-cycle mt-14">
+        {testimonials.map((item) => (
+          <Card key={item.projectSlug} item={item} />
+        ))}
       </div>
     </section>
   );

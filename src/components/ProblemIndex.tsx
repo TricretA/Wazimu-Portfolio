@@ -116,7 +116,7 @@ export default function ProblemIndex() {
           <h2 className="section-title">Problems solved</h2>
           <p className="section-copy">
             Every entry is a real business problem, the system built to kill it, and what
-            changed afterwards. {problemCount} of them. Search it like a database — press{' '}
+            changed afterwards. {problemCount} of them. Search it like you own it. Press{' '}
             <kbd className="rounded border border-[var(--line)] bg-white/8 px-1.5 py-0.5 font-mono text-[0.7em]">
               /
             </kbd>

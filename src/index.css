@@ -30,7 +30,7 @@
   --success: #a4ffe7;
   --shadow: 0 34px 100px rgba(0, 0, 0, 0.62);
   --shadow-sm: 0 12px 40px rgba(0, 0, 0, 0.45);
-  --marquee-gap: 1.25rem;
+  --scroll-gap: 1.25rem;
 
   /* ---- Palette -----------------------------------------------------------
      Five hues, one per work category, so colour on this site always means
@@ -688,13 +688,27 @@
     mask-image: linear-gradient(90deg, #000 62%, transparent 100%);
   }
 
-  /* Below the breakpoint the copy uses the full width — there is no side for
-     the figures to occupy, so they would sit behind the text instead of beside
-     it. */
+  /* Below the breakpoint the method figure keeps its desktop position
+     (left-anchored, bleeding off-screen) — it just no longer gets hidden. */
   @media (max-width: 900px) {
-    .hero-portrait,
-    .method-portrait {
-      display: none;
+    /* The hero figure stays, but re-centred and slightly smaller: there is no
+       edge left to bleed off, so it anchors to the middle of the page instead
+       of the right. Both sides now dissolve into the page rather than just
+       the leading edge, since either one can get cropped by `.page-shell`'s
+       `overflow-x: hidden` once centred. */
+    .hero-portrait {
+      left: 50%;
+      right: auto;
+      height: 150vh;
+      transform: translateX(-50%);
+      -webkit-mask-image:
+        linear-gradient(90deg, transparent 0%, #000 20%, #000 80%, transparent 100%),
+        linear-gradient(180deg, #000 0%, #000 64%, transparent 100%);
+      -webkit-mask-composite: source-in;
+      mask-image:
+        linear-gradient(90deg, transparent 0%, #000 20%, #000 80%, transparent 100%),
+        linear-gradient(180deg, #000 0%, #000 64%, transparent 100%);
+      mask-composite: intersect;
     }
   }
 
@@ -780,30 +794,26 @@
     color: var(--brand, var(--text));
   }
 
-  /* ---------- Marquee ----------
-     Spacing lives on the children, not as a track `gap`. With a gap the track
-     is `2N items + (2N-1) gaps` wide, so translating exactly -50% lands half a
-     gap short and the loop visibly jumps. Per-child margin makes each item
-     `item + gap`, and -50% is then a seamless wrap. */
-  .marquee-viewport {
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-  }
-
-  .marquee-track {
+  /* ---------- Horizontal scroll row (testimonials) ----------
+     Native scroll rather than an auto-playing marquee: on touch it swipes,
+     on a wheel/trackpad it takes the deltaY hijack wired up in the component,
+     and either way the user can stop on a card and actually read it. Edges
+     fade via mask so the row hints at more content instead of hard-cutting
+     mid-card. */
+  .scroll-row {
     display: flex;
-    width: max-content;
-    animation: marquee-track 64s linear infinite;
+    gap: var(--scroll-gap);
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 4%, #000 96%, transparent);
   }
 
-  .marquee-track > * {
-    margin-right: var(--marquee-gap);
-  }
-
-  .marquee-viewport:hover .marquee-track,
-  .marquee-viewport:focus-within .marquee-track {
-    animation-play-state: paused;
+  .scroll-row > * {
+    scroll-snap-align: center;
   }
 
   /* ---------- Scrollbars ---------- */
@@ -1018,11 +1028,6 @@
 /* ---------------------------------------------------------------------------
    Keyframes — layer-independent
    --------------------------------------------------------------------------- */
-@keyframes marquee-track {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
 @keyframes breathe-glow {
   0%,
   100% {
@@ -1096,7 +1101,6 @@
     animation-iteration-count: 1 !important;
   }
 
-  .marquee-track,
   .breathe,
   .breathe::after {
     animation: none;

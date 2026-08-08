@@ -9,6 +9,7 @@ import Testimonials from './components/Testimonials';
 import Insights from './components/Insights';
 import SiteFooter from './components/SiteFooter';
 import AboutModal from './components/AboutModal';
+import BackToTop from './components/BackToTop';
 
 export default function App() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
@@ -43,6 +44,7 @@ export default function App() {
       </main>
 
       <SiteFooter />
+      <BackToTop />
 
       <AnimatePresence>
         {isAboutOpen && <AboutModal onClose={() => setIsAboutOpen(false)} />}

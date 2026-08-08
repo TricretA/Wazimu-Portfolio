@@ -3,7 +3,7 @@ export const site = {
   name: 'Reinhard Bonke',
   /** The work name. Always secondary to `name`, never on its own. */
   workName: 'Tricreta',
-  email: 'wazimucreations@gmail.com',
+  email: 'tricreta@gmail.com',
   phone: '+254727921038',
   phoneHref: 'tel:+254727921038',
   cvUrl: 'https://flowcv.com/resume/7fwcwmo01w70',

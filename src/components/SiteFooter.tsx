@@ -29,7 +29,7 @@ export default function SiteFooter() {
             <br className="hidden sm:block" /> slowing you down?
           </h2>
           <p className="section-copy">
-            {problemCount} problems solved so far. Bring me the {ordinal(problemCount + 1)}.
+            {problemCount} serious problems solved so far. Bring me the {ordinal(problemCount + 1)}.
           </p>
 
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -42,7 +42,7 @@ export default function SiteFooter() {
               <FaWhatsapp className="h-4 w-4" /> Start on WhatsApp
             </a>
             <a href={`mailto:${site.email}`} className="secondary-button w-full sm:w-auto">
-              <Mail className="h-4 w-4" /> Describe it all on email
+              <Mail className="h-4 w-4" /> Let's discuss it on email
             </a>
           </div>
         </motion.div>
