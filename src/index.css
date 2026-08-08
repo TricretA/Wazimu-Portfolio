@@ -688,14 +688,9 @@
     mask-image: linear-gradient(90deg, #000 62%, transparent 100%);
   }
 
-  /* Below the breakpoint the copy uses the full width — there is no side for
-     the method figure to occupy, so it would sit behind the text instead of
-     beside it. */
+  /* Below the breakpoint the method figure keeps its exact desktop
+     position and mask — left-anchored, bleeding off-screen. */
   @media (max-width: 900px) {
-    .method-portrait {
-      display: none;
-    }
-
     /* The hero figure stays, but re-centred and slightly smaller: there is no
        edge left to bleed off, so it anchors to the middle of the page instead
        of the right. Both sides now dissolve into the page rather than just
