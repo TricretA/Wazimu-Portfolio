@@ -1,23 +1,812 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-display: "Poppins", "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-@layer utilities {
-  .animate-marquee {
-    animation: marquee 50s linear infinite;
+/* ---------------------------------------------------------------------------
+   Design tokens — sourced from `new style/globals.css`.
+   Left unlayered on purpose: custom properties never conflict with utilities.
+   --------------------------------------------------------------------------- */
+:root {
+  --bg: #020307;
+  --bg-2: #080b12;
+  --glass: rgba(17, 22, 32, 0.56);
+  --glass-strong: rgba(20, 27, 39, 0.74);
+  --text: #f4f5f7;
+  --soft: rgba(244, 245, 247, 0.74);
+  --muted: rgba(244, 245, 247, 0.52);
+  --faint: rgba(244, 245, 247, 0.34);
+  --line: rgba(255, 255, 255, 0.14);
+  --line-soft: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.26);
+  --accent: #ffffff;
+  --amber: #e8a25c;
+  --blue: #91b7ff;
+  --danger: #ff7c92;
+  --success: #a4ffe7;
+  --shadow: 0 34px 100px rgba(0, 0, 0, 0.62);
+  --shadow-sm: 0 12px 40px rgba(0, 0, 0, 0.45);
+  --marquee-gap: 1.25rem;
+
+  /* ---- Palette -----------------------------------------------------------
+     Five hues, one per work category, so colour on this site always means
+     something. Each is kept as an RGB triplet too, because most uses are
+     tinted fills and glows rather than solid colour.
+     ---------------------------------------------------------------------- */
+  --violet: #b794ff;
+  --cyan: #6fd8ff;
+
+  --rgb-blue: 145 183 255;
+  --rgb-mint: 164 255 231;
+  --rgb-violet: 183 148 255;
+  --rgb-amber: 232 162 92;
+  --rgb-rose: 255 124 146;
+  --rgb-cyan: 111 216 255;
+  --rgb-whatsapp: 37 211 102;
+
+  /* Resolved per element by the [data-category] rules below. Neutral default
+     so anything uncategorised still renders. */
+  --cat: var(--text);
+  --cat-rgb: 244 245 247;
+}
+
+/* Category → hue. Set `data-category` on any element and every `--cat` use
+   inside it — chips, card rules, badges, glows — picks the right colour up. */
+[data-category="Websites"] {
+  --cat: var(--blue);
+  --cat-rgb: var(--rgb-blue);
+}
+[data-category="Mobile Apps"] {
+  --cat: var(--success);
+  --cat-rgb: var(--rgb-mint);
+}
+[data-category="Automation"] {
+  --cat: var(--violet);
+  --cat-rgb: var(--rgb-violet);
+}
+[data-category="Design"] {
+  --cat: var(--amber);
+  --cat-rgb: var(--rgb-amber);
+}
+[data-category="Video Editing"] {
+  --cat: var(--danger);
+  --cat-rgb: var(--rgb-rose);
+}
+
+/* For rows that are not category-driven — services, testimonials — deal the
+   same five hues out in order so no two neighbours match. */
+.hue-cycle > *:nth-child(5n + 1) {
+  --cat: var(--blue);
+  --cat-rgb: var(--rgb-blue);
+}
+.hue-cycle > *:nth-child(5n + 2) {
+  --cat: var(--success);
+  --cat-rgb: var(--rgb-mint);
+}
+.hue-cycle > *:nth-child(5n + 3) {
+  --cat: var(--violet);
+  --cat-rgb: var(--rgb-violet);
+}
+.hue-cycle > *:nth-child(5n + 4) {
+  --cat: var(--amber);
+  --cat-rgb: var(--rgb-amber);
+}
+.hue-cycle > *:nth-child(5n + 5) {
+  --cat: var(--cyan);
+  --cat-rgb: var(--rgb-cyan);
+}
+
+/* ===========================================================================
+   BASE
+   Joins Tailwind's `base` layer so Preflight still applies underneath and
+   utilities continue to win on top.
+   =========================================================================== */
+@layer base {
+  * {
+    box-sizing: border-box;
   }
-  .animate-marquee2 {
-    animation: marquee2 50s linear infinite;
+
+  html {
+    scroll-behavior: smooth;
+    background: var(--bg);
+    /* Sticky header clearance for in-page anchors */
+    scroll-padding-top: 6rem;
   }
-  .animate-marquee-reverse {
-    animation: marquee-reverse 50s linear infinite;
+
+  body {
+    margin: 0;
+    color: var(--text);
+    background: var(--bg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  .animate-marquee2-reverse {
-    animation: marquee2-reverse 50s linear infinite;
+
+  button,
+  input,
+  textarea {
+    font: inherit;
   }
+
+  button {
+    cursor: pointer;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: rgba(209, 138, 79, 0.32);
+    color: var(--text);
+  }
+
+  :focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.55);
+    outline-offset: 2px;
+  }
+}
+
+/* ===========================================================================
+   COMPONENTS
+   Everything below lives in Tailwind's `components` layer so per-element
+   utility overrides (mx-auto, mt-6, flex-1, p-0 …) still take effect.
+   Unlayered rules would beat every utility regardless of specificity.
+   =========================================================================== */
+@layer components {
+  /* ---------- Page shell: aurora wash, light streaks, film grain ---------- */
+  .page-shell {
+    position: relative;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, #030408 0%, #06080f 54%, #010204 100%);
+  }
+
+  /*
+   * Aurora sits on its own fixed layer rather than as `background-attachment:
+   * fixed` on the shell — iOS Safari does not composite fixed backgrounds and
+   * repaints the entire gradient on every scroll frame.
+   * `--aurora-shift` is written to :root by Hero so the light source tracks
+   * scroll. Only `transform` animates, so it stays on the compositor.
+   */
+  .aurora-layer {
+    position: fixed;
+    inset: -20vh 0;
+    z-index: 0;
+    pointer-events: none;
+    will-change: transform;
+    transform: translate3d(0, var(--aurora-shift, 0px), 0);
+    background:
+      radial-gradient(ellipse 58% 38% at 50% 18%, rgba(var(--rgb-blue) / 0.34), transparent 70%),
+      radial-gradient(ellipse 38% 28% at 74% 30%, rgba(var(--rgb-amber) / 0.34), transparent 70%),
+      radial-gradient(ellipse 42% 30% at 20% 34%, rgba(var(--rgb-violet) / 0.28), transparent 70%),
+      radial-gradient(ellipse 46% 26% at 62% 62%, rgba(var(--rgb-mint) / 0.16), transparent 72%),
+      radial-gradient(ellipse 34% 24% at 14% 74%, rgba(var(--rgb-rose) / 0.16), transparent 72%);
+  }
+
+  .page-shell::before {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    content: "";
+    opacity: 0.45;
+    background-image:
+      linear-gradient(115deg, transparent 0 28%, rgba(var(--rgb-cyan) / 0.16) 31%, transparent 36%),
+      linear-gradient(164deg, transparent 0 48%, rgba(var(--rgb-amber) / 0.34) 49%, transparent 52%),
+      linear-gradient(72deg, transparent 0 66%, rgba(var(--rgb-violet) / 0.2) 68%, transparent 72%);
+    filter: blur(18px);
+  }
+
+  .page-shell::after {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    content: "";
+    opacity: 0.24;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");
+    mix-blend-mode: screen;
+  }
+
+  .page-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ---------- Layout ---------- */
+  .shell-width {
+    width: min(100%, 1180px);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .section-band {
+    padding-block: clamp(4.5rem, 11vw, 8rem);
+  }
+
+  .section-divider {
+    border-top: 1px solid var(--line-soft);
+  }
+
+  /* ---------- Surfaces ---------- */
+  .glass-panel {
+    border: 1px solid rgba(var(--cat-rgb) / 0.24);
+    border-radius: 28px;
+    background: color-mix(in srgb, rgb(var(--cat-rgb)) 9%, var(--glass));
+    box-shadow:
+      var(--shadow),
+      0 0 90px -30px rgba(var(--cat-rgb) / 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(24px);
+  }
+
+  .glass-card {
+    position: relative;
+    border: 1px solid var(--line-soft);
+    border-radius: 22px;
+    background: color-mix(in srgb, rgb(var(--cat-rgb)) 6%, rgba(12, 16, 24, 0.56));
+    box-shadow: var(--shadow-sm), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(16px);
+    transition:
+      border-color 220ms ease,
+      transform 220ms ease,
+      box-shadow 220ms ease,
+      background 220ms ease;
+  }
+
+  /* A solid bar of the card's own colour along the top edge. Drawn as a
+     pseudo-element so it follows the border radius instead of squaring it. */
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    border-radius: 22px 22px 0 0;
+    background: rgb(var(--cat-rgb));
+    opacity: 0.55;
+    transition: opacity 220ms ease;
+    pointer-events: none;
+  }
+
+  .glass-card:hover {
+    border-color: rgba(var(--cat-rgb) / 0.4);
+    background: color-mix(in srgb, rgb(var(--cat-rgb)) 11%, rgba(12, 16, 24, 0.56));
+    box-shadow:
+      0 24px 64px rgba(0, 0, 0, 0.55),
+      0 0 44px -12px rgba(var(--cat-rgb) / 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  }
+
+  .glass-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Category tag on a work card. */
+  .cat-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 1px solid rgba(var(--cat-rgb) / 0.3);
+    border-radius: 999px;
+    padding: 0.22rem 0.6rem;
+    background: rgba(var(--cat-rgb) / 0.12);
+    color: rgb(var(--cat-rgb));
+    font-family: var(--font-mono);
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Icon tile that takes its colour from the nearest --cat. */
+  .cat-tile {
+    display: grid;
+    place-items: center;
+    height: 3rem;
+    width: 3rem;
+    border: 1px solid rgba(var(--cat-rgb) / 0.3);
+    border-radius: 14px;
+    background: rgba(var(--cat-rgb) / 0.12);
+    color: rgb(var(--cat-rgb));
+    transition:
+      border-color 180ms ease,
+      background 180ms ease;
+  }
+
+  .group:hover .cat-tile {
+    border-color: rgba(var(--cat-rgb) / 0.6);
+    background: rgba(var(--cat-rgb) / 0.2);
+  }
+
+  .cat-badge svg {
+    height: 0.78rem;
+    width: 0.78rem;
+    flex-shrink: 0;
+  }
+
+  .glass-bar {
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: rgba(10, 14, 21, 0.66);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(22px);
+  }
+
+  /* Stat cells sit on a faint fill so the 1px grid gaps read as dividers. */
+  .stat-cell {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  .stat-cell:nth-child(4n + 1) {
+    background: rgba(var(--rgb-blue) / 0.07);
+  }
+  .stat-cell:nth-child(4n + 2) {
+    background: rgba(var(--rgb-mint) / 0.07);
+  }
+  .stat-cell:nth-child(4n + 3) {
+    background: rgba(var(--rgb-violet) / 0.07);
+  }
+  .stat-cell:nth-child(4n + 4) {
+    background: rgba(var(--rgb-amber) / 0.07);
+  }
+
+  /* ---------- Typography ---------- */
+  .display-title {
+    margin: 0;
+    font-size: clamp(2.6rem, 8vw, 5.2rem);
+    line-height: 0.98;
+    font-weight: 680;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: clamp(1.9rem, 5vw, 3.1rem);
+    line-height: 1.04;
+    font-weight: 640;
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+
+  /* Every section on this site is centred, so the default lives here rather
+     than being re-applied with `mx-auto text-center` at each call site. */
+  .section-copy {
+    margin-top: 1rem;
+    margin-inline: auto;
+    max-width: 52ch;
+    color: var(--muted);
+    font-size: clamp(0.92rem, 2.2vw, 1.02rem);
+    line-height: 1.65;
+    text-align: center;
+  }
+
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-inline: auto;
+    max-width: 46rem;
+    text-align: center;
+  }
+
+  .micro-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem 0.3rem 0.3rem;
+    color: var(--soft);
+    background: rgba(255, 255, 255, 0.05);
+    font-family: var(--font-display);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0;
+  }
+
+  /* Favicon-sized portrait standing in for the old status dot. */
+  .micro-label img {
+    height: 1.35rem;
+    width: 1.35rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .mono-tag {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  /* ---------- Controls ---------- */
+  .primary-button,
+  .secondary-button {
+    border: 0;
+    border-radius: 999px;
+    min-height: 2.95rem;
+    padding-inline: 1.35rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    font-size: 0.86rem;
+    font-weight: 650;
+    white-space: nowrap;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease,
+      box-shadow 180ms ease,
+      opacity 180ms ease;
+  }
+
+  /* The site's one loud element — solid amber, not white. */
+  .primary-button {
+    color: #1a0f05;
+    background: var(--amber);
+    box-shadow: 0 12px 34px rgba(var(--rgb-amber) / 0.3);
+  }
+
+  .primary-button:hover:not(:disabled),
+  .primary-button:focus-visible {
+    transform: translateY(-2px);
+    background: #f2b070;
+    box-shadow:
+      0 0 0 8px rgba(var(--rgb-amber) / 0.14),
+      0 18px 44px rgba(var(--rgb-amber) / 0.34);
+  }
+
+  .secondary-button {
+    color: var(--soft);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+  }
+
+  .secondary-button:hover:not(:disabled),
+  .secondary-button:focus-visible {
+    border-color: var(--line-strong);
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .primary-button:disabled,
+  .secondary-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .chip {
+    border: 1px solid var(--line-soft);
+    border-radius: 999px;
+    padding: 0.46rem 0.95rem;
+    color: var(--muted);
+    background: rgba(255, 255, 255, 0.035);
+    font-size: 0.76rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      color 180ms ease;
+  }
+
+  .chip:hover {
+    border-color: rgba(var(--cat-rgb) / 0.5);
+    color: rgb(var(--cat-rgb));
+    background: rgba(var(--cat-rgb) / 0.09);
+  }
+
+  /* The active filter wears its category's own colour, so the palette below it
+     is never a surprise. */
+  .chip[data-active="true"] {
+    color: #06070a;
+    background: rgb(var(--cat-rgb));
+    border-color: transparent;
+    box-shadow: 0 6px 22px rgba(var(--cat-rgb) / 0.3);
+  }
+
+  .text-input {
+    width: 100%;
+    min-height: 2.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 999px;
+    padding-inline: 1rem;
+    color: var(--text);
+    background: rgba(3, 5, 9, 0.56);
+    outline: none;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      background 160ms ease;
+  }
+
+  .text-area {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 20px;
+    padding: 0.95rem 1.1rem;
+    color: var(--text);
+    background: rgba(3, 5, 9, 0.56);
+    outline: none;
+    resize: none;
+    line-height: 1.6;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      background 160ms ease;
+  }
+
+  .text-input::placeholder,
+  .text-area::placeholder {
+    color: rgba(244, 245, 247, 0.3);
+  }
+
+  .text-input:focus,
+  .text-area:focus {
+    border-color: rgba(255, 255, 255, 0.36);
+    background: rgba(3, 5, 9, 0.78);
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.06);
+    outline: none;
+  }
+
+  /* ---------- Problem / Solution / Outcome registers ---------- */
+  .register {
+    border-radius: 16px;
+    padding: 0.85rem 0.95rem;
+    border: 1px solid transparent;
+    transition: background 220ms ease, border-color 220ms ease;
+  }
+
+  .register-head {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .register-body {
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: var(--soft);
+  }
+
+  .register--problem {
+    background: rgba(255, 124, 146, 0.07);
+    border-color: rgba(255, 124, 146, 0.16);
+  }
+  .register--problem .register-head {
+    color: var(--danger);
+  }
+
+  .register--solution {
+    background: rgba(164, 255, 231, 0.06);
+    border-color: rgba(164, 255, 231, 0.14);
+  }
+  .register--solution .register-head {
+    color: var(--success);
+  }
+
+  .register--outcome {
+    background: rgba(145, 183, 255, 0.07);
+    border-color: rgba(145, 183, 255, 0.16);
+  }
+  .register--outcome .register-head {
+    color: var(--blue);
+  }
+
+  /* ---------- Ghost outline word ---------- */
+  .ghost-word {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: -0.16em;
+    width: 100%;
+    pointer-events: none;
+    user-select: none;
+    text-align: center;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.075);
+    font-size: clamp(4.5rem, 20vw, 14rem);
+    font-weight: 720;
+    line-height: 0.8;
+    letter-spacing: -0.04em;
+    transform: translateX(-50%);
+    opacity: 0.7;
+  }
+
+  /* ---------- Page portrait ----------
+     Same register as `.ghost-word`: oversized, barely there. Anchored to the
+     page rather than the hero, at roughly two viewports tall — the head fills
+     the first screen and the body carries on down behind the sections below.
+     Pushed past the right edge so `.page-shell`'s `overflow-x: hidden` cuts
+     it; the two masks dissolve the leading edge (so it never fights the
+     centred copy) and the tail (so the figure fades out rather than stopping
+     mid-torso). */
+  .hero-portrait {
+    position: absolute;
+    z-index: 0;
+    top: -2vh;
+    right: 0;
+    /* Shifted by a share of its own width rather than the page's, so the head
+       stays half-cut at every viewport width instead of drifting. */
+    transform: translateX(48%);
+    height: 200vh;
+    width: auto;
+    max-width: none;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.11;
+    filter: grayscale(0.4) contrast(1.06);
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 0%, #000 18%),
+      linear-gradient(180deg, #000 0%, #000 64%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(90deg, transparent 0%, #000 18%),
+      linear-gradient(180deg, #000 0%, #000 64%, transparent 100%);
+    mask-composite: intersect;
+  }
+
+  /* Mirror of the hero figure, anchored to the opposite edge: it hangs off the
+     left, so the left of the image is cut and the trailing edge dissolves
+     toward the copy. */
+  .method-portrait {
+    position: absolute;
+    z-index: 0;
+    left: -9%;
+    bottom: 0;
+    height: min(66vh, 620px);
+    width: auto;
+    max-width: none;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.12;
+    filter: grayscale(0.4) contrast(1.06);
+    -webkit-mask-image: linear-gradient(90deg, #000 62%, transparent 100%);
+    mask-image: linear-gradient(90deg, #000 62%, transparent 100%);
+  }
+
+  /* Below the breakpoint the copy uses the full width — there is no side for
+     the figures to occupy, so they would sit behind the text instead of beside
+     it. */
+  @media (max-width: 900px) {
+    .hero-portrait,
+    .method-portrait {
+      display: none;
+    }
+  }
+
+  /* WhatsApp is a recognised green — the CTA is more convincing wearing it. */
+  .whatsapp-button {
+    --pulse-rgb: var(--rgb-whatsapp);
+    color: #04150c;
+    background: #25d366;
+    box-shadow: 0 12px 34px rgba(var(--rgb-whatsapp) / 0.28);
+  }
+
+  .whatsapp-button:hover:not(:disabled),
+  .whatsapp-button:focus-visible {
+    background: #3ce07a;
+    box-shadow:
+      0 0 0 8px rgba(var(--rgb-whatsapp) / 0.14),
+      0 18px 44px rgba(var(--rgb-whatsapp) / 0.32);
+  }
+
+  /* ---------- Breathing CTA ----------
+     Two loops on the same 3s clock: the button's own glow swells and settles,
+     and a ring expands out of its edge and fades. Nothing here touches
+     `transform`, so the hover lift still lands. */
+  .breathe {
+    --pulse-rgb: var(--rgb-amber);
+    position: relative;
+    animation: breathe-glow 3s ease-in-out infinite;
+  }
+
+  .breathe::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    animation: breathe-ring 3s ease-out infinite;
+  }
+
+  /* On hover the button has the user's attention already — hand the shadow
+     back to the hover rule rather than fighting it. */
+  .breathe:hover,
+  .breathe:focus-visible,
+  .breathe:hover::after,
+  .breathe:focus-visible::after {
+    animation: none;
+  }
+
+  /* ---------- About stats ---------- */
+  .about-stat {
+    border: 1px solid rgba(var(--cat-rgb) / 0.26);
+    border-radius: 16px;
+    padding: 0.85rem 0.7rem;
+    background: rgba(var(--cat-rgb) / 0.1);
+    text-align: center;
+  }
+
+  .about-stat__value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: rgb(var(--cat-rgb));
+  }
+
+  .about-stat__label {
+    margin-top: 0.3rem;
+    font-size: 0.7rem;
+    line-height: 1.35;
+    color: var(--muted);
+  }
+
+  /* ---------- Social icons ----------
+     Each link carries its platform's own colour in `--brand`, revealed on
+     hover. Resting state stays uniform so the row reads as one control. */
+  .social-icon {
+    color: var(--muted);
+    transition: color 180ms ease;
+  }
+
+  .social-icon:hover,
+  .social-icon:focus-visible {
+    color: var(--brand, var(--text));
+  }
+
+  /* ---------- Marquee ----------
+     Spacing lives on the children, not as a track `gap`. With a gap the track
+     is `2N items + (2N-1) gaps` wide, so translating exactly -50% lands half a
+     gap short and the loop visibly jumps. Per-child margin makes each item
+     `item + gap`, and -50% is then a seamless wrap. */
+  .marquee-viewport {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee-track 64s linear infinite;
+  }
+
+  .marquee-track > * {
+    margin-right: var(--marquee-gap);
+  }
+
+  .marquee-viewport:hover .marquee-track,
+  .marquee-viewport:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* ---------- Scrollbars ---------- */
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -25,40 +814,302 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
   .custom-scrollbar::-webkit-scrollbar-track {
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background-color: #e5e7eb;
-    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.16);
+    border-radius: 999px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.28);
+  }
+  .custom-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
+  }
+
+  /* ---------- Misc ---------- */
+  .clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .clamp-4 {
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ---------- Stack chips: logo only, name on hover ---------- */
+  .stack-chip {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 2.4rem;
+    width: 2.4rem;
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.045);
+    transition:
+      border-color 180ms ease,
+      background 180ms ease,
+      transform 180ms ease;
+  }
+
+  .stack-chip--wide {
+    width: 4.1rem;
+  }
+
+  .stack-chip:hover,
+  .stack-chip:focus-visible {
+    border-color: var(--line-strong);
+    background: rgba(255, 255, 255, 0.09);
+    transform: translateY(-2px);
+  }
+
+  .stack-chip img {
+    height: 1.2rem;
+    width: auto;
+    max-width: 82%;
+    object-fit: contain;
+  }
+
+  /* Name label — content comes from data-name so there is no extra DOM node
+     competing for space inside the chip. */
+  .stack-chip::after {
+    content: attr(data-name);
+    position: absolute;
+    bottom: calc(100% + 0.45rem);
+    left: 50%;
+    z-index: 6;
+    transform: translateX(-50%) translateY(4px);
+    padding: 0.3rem 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: rgba(4, 6, 11, 0.97);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: var(--shadow-sm);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
+  }
+
+  .stack-chip:hover::after,
+  .stack-chip:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ---------- Method: a charge that runs the rail and lights each step ---------- */
+  .method-rail {
+    position: absolute;
+    top: 1.5rem;
+    left: 12.5%;
+    right: 12.5%;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(var(--rgb-cyan) / 0.28);
+    overflow: visible;
+  }
+
+  .method-charge {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 56px;
+    height: 2px;
+    margin-top: -1px;
+    margin-left: -28px;
+    border-radius: 999px;
+    background: rgb(var(--rgb-cyan));
+    box-shadow: 0 0 16px 2px rgba(var(--rgb-cyan) / 0.85);
+    animation: method-charge 6s linear infinite;
+  }
+
+  /* Each step owns a hue, so the rail reads as a progression rather than four
+     identical dots. `--spark-rgb` is what the keyframes animate against. */
+  .method-node {
+    --spark-rgb: var(--rgb-mint);
+    display: grid;
+    place-items: center;
+    height: 3rem;
+    width: 3rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-2);
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    animation: method-spark 6s linear infinite;
+  }
+
+  .method-node:nth-of-type(1) {
+    --spark-rgb: var(--rgb-mint);
+  }
+  .method-node:nth-of-type(2) {
+    --spark-rgb: var(--rgb-cyan);
+  }
+  .method-node:nth-of-type(3) {
+    --spark-rgb: var(--rgb-violet);
+  }
+  .method-node:nth-of-type(4) {
+    --spark-rgb: var(--rgb-amber);
+  }
+
+  /* ---------- Work card artwork ---------- */
+  .work-shot {
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    object-fit: cover;
+    object-position: top center;
+    transition: transform 420ms ease;
+  }
+
+  .glass-card:hover .work-shot {
+    transform: scale(1.035);
+  }
+
+  /* Inside the detail modal the shot is context, not the headline — cap it so
+     the problem/solution/outcome stay above the fold. */
+  .work-shot--banner,
+  .work-placeholder--banner {
+    aspect-ratio: auto;
+    height: clamp(150px, 26vh, 230px);
+  }
+
+  .work-placeholder {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    background:
+      radial-gradient(ellipse 70% 90% at 50% 0%, rgba(209, 138, 79, 0.2), transparent 70%),
+      linear-gradient(160deg, rgba(145, 183, 255, 0.12), rgba(10, 14, 22, 0.9));
+  }
+
+  .typing-caret::after {
+    content: "";
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.95rem;
+    margin-left: 0.2rem;
+    vertical-align: -0.12rem;
+    background: var(--soft);
+    animation: caret-blink 1s steps(2) infinite;
   }
 }
 
-@keyframes marquee {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(-100%); }
+/* ---------------------------------------------------------------------------
+   Keyframes — layer-independent
+   --------------------------------------------------------------------------- */
+@keyframes marquee-track {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
-@keyframes marquee2 {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(0%); }
+@keyframes breathe-glow {
+  0%,
+  100% {
+    box-shadow: 0 10px 28px rgba(var(--pulse-rgb) / 0.22);
+  }
+  50% {
+    box-shadow: 0 14px 42px rgba(var(--pulse-rgb) / 0.48);
+  }
 }
 
-@keyframes marquee-reverse {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(0%); }
+@keyframes breathe-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--pulse-rgb) / 0.45);
+  }
+  70% {
+    box-shadow: 0 0 0 13px rgba(var(--pulse-rgb) / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--pulse-rgb) / 0);
+  }
 }
 
-@keyframes marquee2-reverse {
-  0% { transform: translateX(0%); }
-  100% { transform: translateX(100%); }
+@keyframes caret-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
-body {
-  font-family: "Inter", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  background-color: #E5E5E5;
+/* The charge sweeps the rail once per cycle. Each node runs the same 6s cycle
+   with a delay equal to when the charge reaches it, so the spark always lands
+   on arrival without any JS timing. */
+@keyframes method-charge {
+  0%   { left: 0%;   opacity: 0; }
+  5%   { opacity: 1; }
+  95%  { opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+@keyframes method-spark {
+  0% {
+    border-color: rgb(var(--spark-rgb));
+    color: rgb(var(--spark-rgb));
+    box-shadow:
+      0 0 24px 5px rgba(var(--spark-rgb) / 0.5),
+      inset 0 0 12px rgba(var(--spark-rgb) / 0.28);
+  }
+  14% {
+    border-color: var(--line);
+    color: var(--muted);
+    box-shadow: 0 0 0 0 rgba(164, 255, 231, 0);
+  }
+  100% {
+    border-color: var(--line);
+    color: var(--muted);
+    box-shadow: 0 0 0 0 rgba(164, 255, 231, 0);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Reduced motion
+   --------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .marquee-track,
+  .breathe,
+  .breathe::after {
+    animation: none;
+  }
+
+  /* The method rail is decorative — hold every node lit rather than flashing. */
+  .method-charge {
+    display: none;
+  }
+
+  .method-node {
+    animation: none;
+    border-color: rgb(var(--spark-rgb));
+    color: rgb(var(--spark-rgb));
+  }
 }

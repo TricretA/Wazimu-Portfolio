@@ -1,45 +1,21 @@
-# Wazimu Portfolio
+# Tricreta Portfolio — Reinhard Bonke
 
-Private personal portfolio site with a conversational intake flow and proposal approval.
+Personal portfolio site. Fully static — there is no backend and no API keys.
 
 ## Stack
 
 - React + Vite
-- Express API server
 - Tailwind CSS
+- Motion (animation)
 
 ## Requirements
 
 - Node.js 18+
 
-## Environment
-
-Create a `.env.local` file in the project root with:
-
-```
-GEMINI_API_KEY=your_gemini_key
-MAKE_WEBHOOK=your_webhook_url
-```
-
-`MAKE_WEBHOOK` can also be provided as `WEBHOOK_URL` or `WEBHOOK`.
-
 ## Run locally
-
-Install dependencies:
 
 ```
 npm install
-```
-
-Start the API server:
-
-```
-npm run server
-```
-
-Start the Vite dev server:
-
-```
 npm run dev
 ```
 
@@ -54,6 +30,26 @@ npm run build
 ```
 npm run lint
 ```
+
+## Content
+
+Everything the site renders lives in `src/data` — edit these rather than the components:
+
+| File              | Holds                                                          |
+| ----------------- | -------------------------------------------------------------- |
+| `problems.ts`     | The project index: problem, solution, outcome, link, screenshot |
+| `services.ts`     | Capabilities, what each solves, and the stack shown per card    |
+| `testimonials.ts` | Client quotes, attribution, and the project each links to       |
+| `insights.ts`     | Articles. `**wrapped**` text renders as accent emphasis         |
+| `site.ts`         | Contact details, socials, and the About copy                    |
+
+## Assets
+
+- `public/work/` — project screenshots (16:10). A project with `image: null`
+  renders a generated placeholder instead, so a missing shot never breaks a card.
+- `public/stack/` — one logo per stack entry in `services.ts`.
+- `public/avatars/` — optional client headshots for `testimonials.ts`. Without one,
+  the card falls back to an initials disc.
 
 ## Notes
 

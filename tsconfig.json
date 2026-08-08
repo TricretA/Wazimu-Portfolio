@@ -22,5 +22,8 @@
     },
     "allowImportingTsExtensions": true,
     "noEmit": true
-  }
+  },
+  "include": ["src", "server.ts", "vite.config.ts"],
+  "//": "`new style/` is a Next.js design reference, not part of this build.",
+  "exclude": ["node_modules", "dist", "new style"]
 }
