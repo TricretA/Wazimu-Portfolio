@@ -59,72 +59,19 @@ export interface SolvedProblem {
 
 export const solvedProblems: SolvedProblem[] = [
   {
-    slug: 'kuccps-course-checker',
-    title: 'KUCCPS Course Checker',
+    slug: 'pesatrix',
+    title: 'Pesatrix',
     summary:
-      'A placement tool that tells students exactly which courses their grades qualify them for.',
+      'A Kenyan digital task platform connecting people looking for online income with businesses offering micro-tasks.',
     problem:
-      'Students struggled to understand KUCCPS placement options. The official information was complex, static, and overwhelming, so many made blind course decisions without clarity on what they actually qualified for.',
+      'Many young people have limited access to flexible income opportunities, while businesses and organizations need people to complete simple digital tasks.',
     solution:
-      'Built a course-checking system that reads a student’s KCSE grades and cluster points, explains eligibility in plain language across degrees, diplomas, certificates, KMTC, artisan and short courses, and returns structured, downloadable PDF results instead of raw cut-off tables — with an AI assistant and cluster calculator alongside it.',
+      'Connects task providers with users through a platform for task discovery, completion, referrals, wallet management, and M-Pesa withdrawals.',
     outcome:
-      'Over 102,000 students have used it to check qualification in seconds rather than guessing, and it became the reference point counsellors point them to.',
-    image: '/work/kuccps-course-checker.webp',
-    link: 'https://kuccpscoursechecker.vercel.app',
-    linkText: 'Open the course checker',
-    repo: 'private',
-    category: 'Websites',
-    status: 'public'
-  },
-  {
-    slug: 'student-doc',
-    title: 'Student Doc',
-    summary: 'A digital document preparation and paid-download platform for students.',
-    problem:
-      'Students often face slow paperwork, manual document requests, payment friction, and unnecessary back-and-forth when obtaining official documents.',
-    solution:
-      'Students select a document, provide their details, preview it, pay digitally, and securely receive the completed document. Documents requiring approval can be reviewed and finalized before delivery.',
-    outcome:
-      'Faster document processing, fewer administrative steps, and a smoother way for students and officials to handle document requests.',
-    image: '/work/student-doc.webp',
-    link: 'https://studentsdoc.vercel.app',
-    linkText: 'Open Student Doc',
-    repo: 'private',
-    category: 'Websites',
-    status: 'public'
-  },
-  {
-    slug: 'scidraft',
-    title: 'SciDraft',
-    summary:
-      'Turns a lab manual and a set of raw results into a structured university science report.',
-    problem:
-      'Science students finish an experiment holding a manual and a page of readings, then lose entire evenings trying to work out what the numbers mean and how to arrange them into the report structure their department expects. The science is done; the writing is the bottleneck, and weak reports cost marks that the practical work already earned.',
-    solution:
-      'Built a drafting engine that takes the practical’s manual — matched against a library of stored manual templates by unit and year — together with the student’s own recorded results, and produces a structured draft: aim, procedure, observations, calculations, discussion and conclusion, written around the actual data rather than a generic template.',
-    outcome:
-      'Report writing collapsed from an evening to minutes, and students hand in work that is properly structured and actually reflects the results they recorded.',
-    image: '/work/scidraft.webp',
-    link: 'https://sci-draft.vercel.app/',
-    linkText: 'Open SciDraft',
-    repo: 'private',
-    category: 'Websites',
-    status: 'public'
-  },
-  {
-    slug: 'lwanda-cdc',
-    title: 'Lwanda Child Development Centre',
-    summary:
-      'A digital home for a faith-based child development centre — sponsorship, stories and giving in one place.',
-    problem:
-      'KE 258 Lwanda Child & Youth Development Centre has supported over 350 children in Lwanda since 2015, in partnership with Compassion International and FGCK. But the work existed only on the ground. Sponsors, partners and donors had no way to find the centre, understand its programmes, or give — so support depended entirely on personal introductions.',
-    solution:
-      'Built the centre a complete public presence: its three programmes (Child Survival, Child Sponsorship, Youth Development) explained clearly, real impact figures, beneficiary stories, events, a photo gallery, direct sponsorship and donation paths, and the safeguarding, privacy and terms pages a child-focused organisation is held to.',
-    outcome:
-      'The centre can now be found, understood and supported by anyone, and sponsorship conversations start from a credible page instead of a cold introduction.',
-    image: '/work/lwanda-cdc.webp',
-    link: 'https://lwandacdc.vercel.app',
-    linkText: 'Open Lwanda CDC',
+      'Creates a structured marketplace for digital tasks and makes earning and withdrawing money more accessible to users.',
+    image: '/work/pesatrix.webp',
+    link: 'https://pesatrix.co.ke',
+    linkText: 'Open Pesatrix',
     repo: 'private',
     category: 'Websites',
     status: 'public'
@@ -148,42 +95,6 @@ export const solvedProblems: SolvedProblem[] = [
     status: 'public'
   },
   {
-    slug: 'mybingwa-admin',
-    title: 'My Bingwa Admin Dashboard',
-    summary:
-      'The remote control panel behind the My Bingwa app — offers, payments and releases without shipping a build.',
-    problem:
-      'Every change to the My Bingwa app — a new offer, a price correction, a promo banner, a support number — meant editing the app itself and pushing a store update. Prices move daily in the bundle business, so the app was always slightly wrong, and nobody could see which payments had actually landed.',
-    solution:
-      'Built a super-admin dashboard that drives the live app remotely: offers and pricing, billboard adverts, push notifications, SMS rules, payment reconciliation, support details, app configuration, staged preview-and-publish, version and update control, and a full audit log of who changed what.',
-    outcome:
-      'Offers change in seconds instead of release cycles, revenue and confirmed payments are visible at a glance, and the app stays correct without a single new build.',
-    image: '/work/mybingwa-admin.webp',
-    link: null,
-    linkText: null,
-    repo: 'private',
-    category: 'Websites',
-    status: 'private'
-  },
-  {
-    slug: 'tricret-parse',
-    title: 'TricretParse',
-    summary:
-      'Rewrites a plain-English prompt into a structured JSON prompt, so AI output stops drifting.',
-    problem:
-      'People describe what they want to an AI in loose prose, and get loose results back — a detail dropped here, an instruction reinterpreted there. Prompting precisely means writing structured JSON by hand, which most people won’t do and shouldn’t have to.',
-    solution:
-      'Built a converter that reads a natural-language request and returns it as a properly structured JSON prompt, with an Advanced JSON mode for richer schemas and one-tap copy for pasting straight into any model.',
-    outcome:
-      'Non-technical users get the precision of structured prompting without writing a line of JSON, and the same prompt returns the same shape of answer every time.',
-    image: '/work/tricret-parse.webp',
-    link: 'https://prompt-to-json-seven.vercel.app/',
-    linkText: 'Open TricretParse',
-    repo: 'private',
-    category: 'Websites',
-    status: 'public'
-  },
-  {
     slug: 'valuehomepros',
     title: 'ValueHomePros',
     summary:
@@ -202,19 +113,126 @@ export const solvedProblems: SolvedProblem[] = [
     status: 'public'
   },
   {
-    slug: 'pesatrix',
-    title: 'Pesatrix',
+    slug: 'blue-horizon-estates',
+    title: 'Blue Horizon Estates',
     summary:
-      'A Kenyan digital task platform connecting people looking for online income with businesses offering micro-tasks.',
+      'A public home for a rural affordable-housing developer — the mission, the homes already delivered, and the partners it needs to reach the next stage.',
     problem:
-      'Many young people have limited access to flexible income opportunities, while businesses and organizations need people to complete simple digital tasks.',
+      'Blue Horizon builds permanent, affordable homes in rural Southwest Washington, where ageing manufactured-home communities are disappearing and nothing is replacing them. The organisation had no public presence to explain that model, show what it had already delivered, or reach the nonprofit, tribal and public-agency partners its grant-funded projects depend on.',
     solution:
-      'Connects task providers with users through a platform for task discovery, completion, referrals, wallet management, and M-Pesa withdrawals.',
+      'Built the organisation a complete site: the mission and the housing gap it answers, what it builds (modular homes on permanent foundations, preserved manufactured-home communities, small multifamily infill and site infrastructure), the flagship Camelot community, the expansion roadmap, and the partners and accountability pages funders and agencies review before committing.',
     outcome:
-      'Creates a structured marketplace for digital tasks and makes earning and withdrawing money more accessible to users.',
-    image: '/work/pesatrix.webp',
-    link: 'https://pesatrix.co.ke',
-    linkText: 'Open Pesatrix',
+      'Blue Horizon now has a credible, evidence-led presence — eleven homes at full occupancy and a stated path to sixty — that partners and agencies can evaluate before a conversation ever starts.',
+    image: '/work/blue-horizon-estates.webp',
+    link: 'https://bluehorizonestates.com',
+    linkText: 'Open Blue Horizon Estates',
+    repo: 'private',
+    category: 'Websites',
+    status: 'public'
+  },
+  {
+    slug: 'lwanda-cdc',
+    title: 'Lwanda Child Development Centre',
+    summary:
+      'A digital home for a faith-based child development centre — sponsorship, stories and giving in one place.',
+    problem:
+      'KE 258 Lwanda Child & Youth Development Centre has supported over 350 children in Lwanda since 2015, in partnership with Compassion International and FGCK. But the work existed only on the ground. Sponsors, partners and donors had no way to find the centre, understand its programmes, or give — so support depended entirely on personal introductions.',
+    solution:
+      'Built the centre a complete public presence: its three programmes (Child Survival, Child Sponsorship, Youth Development) explained clearly, real impact figures, beneficiary stories, events, a photo gallery, direct sponsorship and donation paths, and the safeguarding, privacy and terms pages a child-focused organisation is held to.',
+    outcome:
+      'The centre can now be found, understood and supported by anyone, and sponsorship conversations start from a credible page instead of a cold introduction.',
+    image: '/work/lwanda-cdc.webp',
+    link: 'https://lwandacdc.vercel.app',
+    linkText: 'Open Lwanda CDC',
+    repo: 'private',
+    category: 'Websites',
+    status: 'public'
+  },
+  {
+    slug: 'mybingwa-admin',
+    title: 'My Bingwa Admin Dashboard',
+    summary:
+      'The remote control panel behind the My Bingwa app — offers, payments and releases without shipping a build.',
+    problem:
+      'Every change to the My Bingwa app — a new offer, a price correction, a promo banner, a support number — meant editing the app itself and pushing a store update. Prices move daily in the bundle business, so the app was always slightly wrong, and nobody could see which payments had actually landed.',
+    solution:
+      'Built a super-admin dashboard that drives the live app remotely: offers and pricing, billboard adverts, push notifications, SMS rules, payment reconciliation, support details, app configuration, staged preview-and-publish, version and update control, and a full audit log of who changed what.',
+    outcome:
+      'Offers change in seconds instead of release cycles, revenue and confirmed payments are visible at a glance, and the app stays correct without a single new build.',
+    image: '/work/mybingwa-admin.webp',
+    link: null,
+    linkText: null,
+    repo: 'private',
+    category: 'Websites',
+    status: 'private'
+  },
+  {
+    slug: 'student-doc',
+    title: 'Student Doc',
+    summary: 'A digital document preparation and paid-download platform for students.',
+    problem:
+      'Students often face slow paperwork, manual document requests, payment friction, and unnecessary back-and-forth when obtaining official documents.',
+    solution:
+      'Students select a document, provide their details, preview it, pay digitally, and securely receive the completed document. Documents requiring approval can be reviewed and finalized before delivery.',
+    outcome:
+      'Faster document processing, fewer administrative steps, and a smoother way for students and officials to handle document requests.',
+    image: '/work/student-doc.webp',
+    link: 'https://studentsdoc.vercel.app',
+    linkText: 'Open Student Doc',
+    repo: 'private',
+    category: 'Websites',
+    status: 'public'
+  },
+  {
+    slug: 'kuccps-course-checker',
+    title: 'KUCCPS Course Checker',
+    summary:
+      'A placement tool that tells students exactly which courses their grades qualify them for.',
+    problem:
+      'Students struggled to understand KUCCPS placement options. The official information was complex, static, and overwhelming, so many made blind course decisions without clarity on what they actually qualified for.',
+    solution:
+      'Built a course-checking system that reads a student’s KCSE grades and cluster points, explains eligibility in plain language across degrees, diplomas, certificates, KMTC, artisan and short courses, and returns structured, downloadable PDF results instead of raw cut-off tables — with an AI assistant and cluster calculator alongside it.',
+    outcome:
+      'Over 102,000 students have used it to check qualification in seconds rather than guessing, and it became the reference point counsellors point them to.',
+    image: '/work/kuccps-course-checker.webp',
+    link: 'https://kuccpscoursechecker.vercel.app',
+    linkText: 'Open the course checker',
+    repo: 'private',
+    category: 'Websites',
+    status: 'public'
+  },
+  {
+    slug: 'scidraft',
+    title: 'SciDraft',
+    summary:
+      'Turns a lab manual and a set of raw results into a structured university science report.',
+    problem:
+      'Science students finish an experiment holding a manual and a page of readings, then lose entire evenings trying to work out what the numbers mean and how to arrange them into the report structure their department expects. The science is done; the writing is the bottleneck, and weak reports cost marks that the practical work already earned.',
+    solution:
+      'Built a drafting engine that takes the practical’s manual — matched against a library of stored manual templates by unit and year — together with the student’s own recorded results, and produces a structured draft: aim, procedure, observations, calculations, discussion and conclusion, written around the actual data rather than a generic template.',
+    outcome:
+      'Report writing collapsed from an evening to minutes, and students hand in work that is properly structured and actually reflects the results they recorded.',
+    image: '/work/scidraft.webp',
+    link: 'https://sci-draft.vercel.app/',
+    linkText: 'Open SciDraft',
+    repo: 'private',
+    category: 'Websites',
+    status: 'public'
+  },
+  {
+    slug: 'tricret-parse',
+    title: 'TricretParse',
+    summary:
+      'Rewrites a plain-English prompt into a structured JSON prompt, so AI output stops drifting.',
+    problem:
+      'People describe what they want to an AI in loose prose, and get loose results back — a detail dropped here, an instruction reinterpreted there. Prompting precisely means writing structured JSON by hand, which most people won’t do and shouldn’t have to.',
+    solution:
+      'Built a converter that reads a natural-language request and returns it as a properly structured JSON prompt, with an Advanced JSON mode for richer schemas and one-tap copy for pasting straight into any model.',
+    outcome:
+      'Non-technical users get the precision of structured prompting without writing a line of JSON, and the same prompt returns the same shape of answer every time.',
+    image: '/work/tricret-parse.webp',
+    link: 'https://prompt-to-json-seven.vercel.app/',
+    linkText: 'Open TricretParse',
     repo: 'private',
     category: 'Websites',
     status: 'public'
@@ -304,9 +322,9 @@ export const solvedProblems: SolvedProblem[] = [
     outcome:
       'Makes multi-device management significantly faster and gives users a centralized way to monitor and operate their phones.',
     image: '/work/phone-monitor.webp',
-    link: null,
-    linkText: null,
-    repo: 'private',
+    link: 'https://github.com/wazimuautomate/Phone-monitor',
+    linkText: 'View the repo',
+    repo: 'public',
     category: 'Mobile Apps',
     status: 'private'
   },
@@ -322,9 +340,9 @@ export const solvedProblems: SolvedProblem[] = [
     outcome:
       'Encourages consistent saving habits while helping users reduce distractions without permanently locking them out of their devices.',
     image: '/work/savelock.webp',
-    link: null,
-    linkText: null,
-    repo: 'private',
+    link: 'https://github.com/wazimuautomate/SaveLock',
+    linkText: 'View the repo',
+    repo: 'public',
     category: 'Mobile Apps',
     status: 'private'
   },
