@@ -51,6 +51,8 @@ export interface SolvedProblem {
   image: string | null;
   link: string | null;
   linkText: string | null;
+  /** Public source URL when the project owner has made the code available. */
+  repoUrl?: string;
   /** Whether the source is browsable. `private` renders the ownership note. */
   repo: 'public' | 'private';
   category: ProblemCategory;
@@ -127,6 +129,25 @@ export const solvedProblems: SolvedProblem[] = [
     link: 'https://bluehorizonestates.com',
     linkText: 'Open Blue Horizon Estates',
     repo: 'private',
+    category: 'Websites',
+    status: 'public'
+  },
+  {
+    slug: 'vacasky-adventure',
+    title: 'VacaSky Adventure Travel Website',
+    summary:
+      'A high-end responsive travel website designed to showcase destinations, tours, travel stories, and booking experiences.',
+    problem:
+      'Travel brands need an engaging online presence that makes destinations feel inspiring while guiding visitors toward booking a trip.',
+    solution:
+      'Built a fully responsive travel landing page with animated sections, destination cards, booking prompts, travel blogs, FAQ, newsletter signup, custom imagery, and branded interactions.',
+    outcome:
+      'A polished, portfolio-ready travel website that demonstrates the ability to turn a detailed visual design into a fast, interactive, production-ready web experience.',
+    image: '/work/vacasky-adventure.webp',
+    link: 'https://smartadventure.netlify.app',
+    linkText: 'Visit VacaSky Adventure',
+    repoUrl: 'https://github.com/wazimuautomate/adventure-site',
+    repo: 'public',
     category: 'Websites',
     status: 'public'
   },

@@ -97,6 +97,17 @@ export default function ProblemDetail({ problem, onClose }: Props) {
                 </a>
               )}
 
+              {problem.repo === 'public' && problem.repoUrl && (
+                <a
+                  href={problem.repoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="secondary-button"
+                >
+                  View source <ArrowUpRight className="h-3.5 w-3.5" />
+                </a>
+              )}
+
               {problem.repo === 'private' && problem.category !== 'Design' && (
                 <p className="m-0 max-w-[52ch] text-xs leading-relaxed text-[var(--faint)]">
                   Source is private — the owner does not permit public access to this
