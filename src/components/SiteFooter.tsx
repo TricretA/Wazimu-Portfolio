@@ -3,6 +3,8 @@ import { ArrowUpRight, Mail } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { site } from '../data/site';
 import { problemCount } from '../data/problems';
+import { legalDocs } from '../data/legal';
+import { routeLink } from '../lib/route';
 
 /** 23 → "23rd". Handles the 11/12/13 exceptions. */
 function ordinal(value: number) {
@@ -50,7 +52,7 @@ export default function SiteFooter() {
 
       <div className="shell-width relative z-[1] border-t border-[var(--line-soft)] py-7">
         <div className="flex flex-col items-center justify-center gap-4 text-center">
-          <div className="flex items-center gap-5 text-xs font-medium text-[var(--muted)]">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs font-medium text-[var(--muted)]">
             <a
               href={site.socials.github}
               target="_blank"
@@ -59,6 +61,17 @@ export default function SiteFooter() {
             >
               GitHub <ArrowUpRight className="h-3 w-3" />
             </a>
+            {/* Privacy and Terms sit here because platform reviewers — Meta's
+                WhatsApp API among them — expect both at a findable footer URL. */}
+            {legalDocs.map((doc) => (
+              <a
+                key={doc.slug}
+                {...routeLink(`/${doc.slug}`)}
+                className="transition-colors hover:text-[var(--text)]"
+              >
+                {doc.label}
+              </a>
+            ))}
             <a
               href={site.cvUrl}
               target="_blank"

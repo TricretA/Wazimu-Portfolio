@@ -6,6 +6,22 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
+    build: {
+      /*
+       * Three entries, not one. `/privacy` and `/terms` are required at real
+       * URLs by platform reviewers (Meta's WhatsApp API among them), and
+       * building them as static files means the URLs resolve on any host
+       * without an SPA rewrite rule. Each still boots the same app — the
+       * router in `src/lib/route.ts` picks the document off the pathname.
+       */
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+          privacy: path.resolve(__dirname, 'privacy/index.html'),
+          terms: path.resolve(__dirname, 'terms/index.html')
+        }
+      }
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.')
