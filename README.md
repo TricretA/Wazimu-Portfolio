@@ -42,22 +42,45 @@ Everything the site renders lives in `src/data` — edit these rather than the c
 | `testimonials.ts` | Client quotes, attribution, and the project each links to       |
 | `insights.ts`     | Articles. `**wrapped**` text renders as accent emphasis         |
 | `site.ts`         | Contact details, socials, and the About copy                    |
-| `legal.ts`        | Privacy Policy and Terms of Service copy, section by section    |
+| `legal.ts`        | Privacy, Terms, and Data Deletion copy, plus `DELETION_ENDPOINT` |
 
 ## Pages
 
 The site is one scrolling page plus two legal documents, each at its own URL:
 
-| URL        | Entry                | Renders                              |
-| ---------- | -------------------- | ------------------------------------ |
-| `/`        | `index.html`         | The portfolio                        |
-| `/privacy` | `privacy/index.html` | Privacy Policy, from `data/legal.ts` |
-| `/terms`   | `terms/index.html`   | Terms of Service, from `data/legal.ts` |
+| URL        | Entry                | Renders                                  |
+| ---------- | -------------------- | ---------------------------------------- |
+| `/`        | `index.html`         | The portfolio                            |
+| `/privacy` | `privacy/index.html` | Privacy Policy, from `data/legal.ts`     |
+| `/terms`   | `terms/index.html`   | Terms of Service, from `data/legal.ts`   |
+| `/data`    | `data/index.html`    | Data deletion request form               |
 
-All three are real build entries (see `vite.config.ts`), so the legal URLs
+All four are real build entries (see `vite.config.ts`), so the legal URLs
 resolve on any static host without an SPA rewrite rule — platform reviewers
 such as Meta's WhatsApp Business API request them cold. Each entry boots the
-same app; `src/lib/route.ts` picks the page off the pathname.
+same app; `src/lib/route.ts` picks the page off the pathname, and
+`components/LegalShell.tsx` is the frame they share.
+
+### Receiving deletion requests
+
+The form at `/data` has no destination yet. Set `DELETION_ENDPOINT` in
+`src/data/legal.ts` to any URL that accepts a POST — an n8n webhook, a form
+service — and requests start arriving as JSON:
+
+```json
+{
+  "reference": "DEL-MTYBZ3B4-N645",
+  "business": "…",
+  "phone": "…",
+  "email": "…",
+  "reason": "…",
+  "submittedAt": "2026-09-12T11:57:40.864Z"
+}
+```
+
+While it is `null`, the confirmation screen asks the requester to send the same
+details over WhatsApp or email, both prefilled — so a request made today is
+never silently dropped. Setting the endpoint hides that step automatically.
 
 ## Assets
 

@@ -3,16 +3,16 @@ import { useEffect, useState, type MouseEvent } from 'react';
 /**
  * A two-page router, hand-rolled.
  *
- * The site is one scrolling page plus the two legal documents Meta and other
- * platform reviewers require at their own URLs, so a router library would be
- * more machinery than the problem needs.
+ * The site is one scrolling page plus the legal pages Meta and other platform
+ * reviewers require at their own URLs, so a router library would be more
+ * machinery than the problem needs.
  *
- * `/privacy` and `/terms` are also built as real static entries (see
- * `vite.config.ts`), so a cold visit to either URL resolves on any static host
- * without a rewrite rule. This hook only covers navigation once the app is
- * already running.
+ * `/privacy`, `/terms` and `/data` are also built as real static entries (see
+ * `vite.config.ts`), so a cold visit to any of them resolves on any static
+ * host without a rewrite rule. This hook only covers navigation once the app
+ * is already running.
  */
-export type Route = 'home' | 'privacy' | 'terms';
+export type Route = 'home' | 'privacy' | 'terms' | 'data';
 
 /** Fired on `navigate()`. `popstate` alone misses pushes we make ourselves. */
 const ROUTE_EVENT = 'tricreta:route';
@@ -22,6 +22,7 @@ export function toRoute(pathname: string): Route {
   const path = pathname.toLowerCase().replace(/(?:\/index)?(?:\.html)?\/*$/, '');
   if (path.endsWith('/privacy')) return 'privacy';
   if (path.endsWith('/terms')) return 'terms';
+  if (path.endsWith('/data')) return 'data';
   return 'home';
 }
 

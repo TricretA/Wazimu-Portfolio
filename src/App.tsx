@@ -11,6 +11,7 @@ import SiteFooter from './components/SiteFooter';
 import AboutModal from './components/AboutModal';
 import BackToTop from './components/BackToTop';
 import LegalPage from './components/LegalPage';
+import DataDeletionPage from './components/DataDeletionPage';
 import { privacyPolicy, termsOfService } from './data/legal';
 import { useRoute } from './lib/route';
 
@@ -18,10 +19,11 @@ export default function App() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const route = useRoute();
 
-  // The legal documents stand on their own URLs — platform reviewers link
+  // The legal pages stand on their own URLs — platform reviewers link
   // straight to them — so they replace the page rather than open over it.
   if (route === 'privacy') return <LegalPage doc={privacyPolicy} />;
   if (route === 'terms') return <LegalPage doc={termsOfService} />;
+  if (route === 'data') return <DataDeletionPage />;
 
   return (
     <div className="page-shell">

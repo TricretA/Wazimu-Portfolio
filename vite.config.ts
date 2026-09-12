@@ -8,17 +8,18 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss()],
     build: {
       /*
-       * Three entries, not one. `/privacy` and `/terms` are required at real
-       * URLs by platform reviewers (Meta's WhatsApp API among them), and
-       * building them as static files means the URLs resolve on any host
+       * Four entries, not one. `/privacy`, `/terms` and `/data` are required
+       * at real URLs by platform reviewers (Meta's WhatsApp API among them),
+       * and building them as static files means the URLs resolve on any host
        * without an SPA rewrite rule. Each still boots the same app — the
-       * router in `src/lib/route.ts` picks the document off the pathname.
+       * router in `src/lib/route.ts` picks the page off the pathname.
        */
       rollupOptions: {
         input: {
           main: path.resolve(__dirname, 'index.html'),
           privacy: path.resolve(__dirname, 'privacy/index.html'),
-          terms: path.resolve(__dirname, 'terms/index.html')
+          terms: path.resolve(__dirname, 'terms/index.html'),
+          data: path.resolve(__dirname, 'data/index.html')
         }
       }
     },

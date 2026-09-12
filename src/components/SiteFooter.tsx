@@ -3,7 +3,7 @@ import { ArrowUpRight, Mail } from 'lucide-react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { site } from '../data/site';
 import { problemCount } from '../data/problems';
-import { legalDocs } from '../data/legal';
+import { legalPages } from '../data/legal';
 import { routeLink } from '../lib/route';
 
 /** 23 → "23rd". Handles the 11/12/13 exceptions. */
@@ -61,15 +61,16 @@ export default function SiteFooter() {
             >
               GitHub <ArrowUpRight className="h-3 w-3" />
             </a>
-            {/* Privacy and Terms sit here because platform reviewers — Meta's
-                WhatsApp API among them — expect both at a findable footer URL. */}
-            {legalDocs.map((doc) => (
+            {/* Privacy, Terms and Data sit here because platform reviewers —
+                Meta's WhatsApp API among them — expect all three at a findable
+                footer URL. Order comes from `legalPages`. */}
+            {legalPages.map((page) => (
               <a
-                key={doc.slug}
-                {...routeLink(`/${doc.slug}`)}
+                key={page.slug}
+                {...routeLink(`/${page.slug}`)}
                 className="transition-colors hover:text-[var(--text)]"
               >
-                {doc.label}
+                {page.label}
               </a>
             ))}
             <a

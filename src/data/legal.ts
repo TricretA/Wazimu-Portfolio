@@ -314,3 +314,68 @@ export const termsOfService: LegalDoc = {
 };
 
 export const legalDocs = [privacyPolicy, termsOfService] as const;
+
+/* ---------------------------------------------------------------------------
+ * Data deletion
+ * ------------------------------------------------------------------------ */
+
+/**
+ * Where a submitted deletion request is POSTed as JSON.
+ *
+ * Null until the receiving endpoint exists — an n8n webhook, a form service,
+ * anything that accepts a POST. Set the URL here and the form starts
+ * delivering; nothing else needs to change. While it is null the confirmation
+ * screen asks the requester to send the same details over WhatsApp or email
+ * instead, so a request made today still reaches a person.
+ */
+export const DELETION_ENDPOINT: string | null = null;
+
+/** Hours quoted to the requester, and used in the confirmation copy. */
+export const DELETION_WINDOW_HOURS = 24;
+
+export interface DeletionPageCopy {
+  slug: 'data';
+  label: string;
+  eyebrow: string;
+  title: string;
+  tagline: string;
+  intro: string;
+  /** Shown above the form — what the request actually does. */
+  notice: string[];
+  /** What gets removed, listed so the requester knows what they are losing. */
+  removes: string[];
+}
+
+export const dataDeletion: DeletionPageCopy = {
+  slug: 'data',
+  label: 'Data',
+  eyebrow: 'Legal',
+  title: 'Data Deletion Request',
+  tagline:
+    'Request the permanent removal of your business and customer data from the Tricreta WhatsApp automation.',
+  intro:
+    'Use this form to ask for your data to be deleted from the Tricreta WhatsApp automation. Fill in the details linked to your account so the right records can be found.',
+  notice: [
+    `Requests are processed within ${DELETION_WINDOW_HOURS} hours of being received.`,
+    'Deletion is permanent and cannot be reversed. Once your records are removed they cannot be recovered, and any automation running against them stops working.'
+  ],
+  removes: [
+    'Your business name and profile details',
+    'Phone numbers linked to your account',
+    'Message and automation history',
+    'Payment references and transaction activity',
+    'Customer records held on your behalf — phone numbers, orders, and delivery records'
+  ]
+};
+
+/**
+ * Every legal URL, in footer order. Drives the footer row and the
+ * cross-links at the foot of each page, so a new document is added once.
+ */
+export const legalPages = [
+  { slug: 'privacy', label: privacyPolicy.label, title: privacyPolicy.title },
+  { slug: 'terms', label: termsOfService.label, title: termsOfService.title },
+  { slug: 'data', label: dataDeletion.label, title: dataDeletion.title }
+] as const;
+
+export type LegalSlug = (typeof legalPages)[number]['slug'];
