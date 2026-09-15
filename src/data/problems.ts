@@ -485,11 +485,11 @@ export const solvedProblems: SolvedProblem[] = [
     outcome:
       'A working demo takes a customer from "I need a laptop for programming" through product selection, delivery details, M-Pesa payment and confirmation, with the owner automatically SMS’d the order and receipt. Refactored from an earlier build that ran two conflicting AI agents across 11 workflows and 172 nodes — and had processed zero successful payments — down to 6 focused workflows with a single point of AI involvement, plus the payment-recovery safety net the original design lacked.',
     image: '/work/n8n-automation.webp',
-    link: null,
-    linkText: null,
+    link: 'https://drive.google.com/file/d/1ameTD1tr2GS4D1jOzUbSvyFFEp7UHt6V/view',
+    linkText: 'Watch the demo',
     repo: 'private',
     category: 'Automation',
-    status: 'private'
+    status: 'public'
   },
 
   /* --------------------------------- Websites ------------------------------- */
