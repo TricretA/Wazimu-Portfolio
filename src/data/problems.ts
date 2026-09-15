@@ -370,6 +370,24 @@ export const solvedProblems: SolvedProblem[] = [
 
   /* -------------------------------- Automation ------------------------------ */
   {
+    slug: 'whatsapp-ai-sales-agent',
+    title: 'WhatsApp AI Sales Agent with M-Pesa Checkout',
+    summary:
+      'An AI sales agent that runs entirely inside WhatsApp — search a real catalogue, get a grounded recommendation, and pay by M-Pesa — with the owner SMS’d the moment a sale lands.',
+    problem:
+      'Small businesses sell over WhatsApp by hand — answering "do you have...", quoting prices, collecting delivery details across scattered messages, and sending M-Pesa links manually. It doesn’t scale past a handful of conversations at once, and putting a free-roaming LLM in front of it is worse: left to decide what happens next, it can invent a product that doesn’t exist, misquote a price, or claim a payment succeeded when it didn’t — a liability the moment the AI is one step from moving real money.',
+    solution:
+      'Built a deterministic state machine, not an autonomous agent: ten explicit conversation states in Postgres, one function as the sole writer of state, and the LLM used for exactly one job per message — classify intent and extract entities as strict JSON — never seeing a price, a total, or a payment outcome. Product search, stock and order totals come straight from the database through a four-tier search ladder, so the model can recommend but never invent. M-Pesa checkout is fully verified — signed STK push, callback verification, duplicate-payment protection, and a scheduled job that reconciles payments even when Safaricom’s callback never arrives. Credentials live in Supabase Vault, inbound webhooks are signature-verified, and 176 automated assertions across five test suites run before every deploy.',
+    outcome:
+      'A working demo takes a customer from "I need a laptop for programming" through product selection, delivery details, M-Pesa payment and confirmation, with the owner automatically SMS’d the order and receipt. Refactored from an earlier build that ran two conflicting AI agents across 11 workflows and 172 nodes — and had processed zero successful payments — down to 6 focused workflows with a single point of AI involvement, plus the payment-recovery safety net the original design lacked.',
+    image: '/work/n8n-automation.webp',
+    link: 'https://drive.google.com/file/d/1ameTD1tr2GS4D1jOzUbSvyFFEp7UHt6V/view',
+    linkText: 'Watch the demo',
+    repo: 'private',
+    category: 'Automation',
+    status: 'public'
+  },
+  {
     slug: 'whatsapp-bundle-automation',
     title: 'WhatsApp Bundle Sale Automation',
     summary: 'A WhatsApp bot that sells data bundles and confirms M-Pesa payment end to end.',
@@ -472,24 +490,6 @@ export const solvedProblems: SolvedProblem[] = [
     repo: 'private',
     category: 'Automation',
     status: 'private'
-  },
-  {
-    slug: 'whatsapp-ai-sales-agent',
-    title: 'WhatsApp AI Sales Agent with M-Pesa Checkout',
-    summary:
-      'An AI sales agent that runs entirely inside WhatsApp — search a real catalogue, get a grounded recommendation, and pay by M-Pesa — with the owner SMS’d the moment a sale lands.',
-    problem:
-      'Small businesses sell over WhatsApp by hand — answering "do you have...", quoting prices, collecting delivery details across scattered messages, and sending M-Pesa links manually. It doesn’t scale past a handful of conversations at once, and putting a free-roaming LLM in front of it is worse: left to decide what happens next, it can invent a product that doesn’t exist, misquote a price, or claim a payment succeeded when it didn’t — a liability the moment the AI is one step from moving real money.',
-    solution:
-      'Built a deterministic state machine, not an autonomous agent: ten explicit conversation states in Postgres, one function as the sole writer of state, and the LLM used for exactly one job per message — classify intent and extract entities as strict JSON — never seeing a price, a total, or a payment outcome. Product search, stock and order totals come straight from the database through a four-tier search ladder, so the model can recommend but never invent. M-Pesa checkout is fully verified — signed STK push, callback verification, duplicate-payment protection, and a scheduled job that reconciles payments even when Safaricom’s callback never arrives. Credentials live in Supabase Vault, inbound webhooks are signature-verified, and 176 automated assertions across five test suites run before every deploy.',
-    outcome:
-      'A working demo takes a customer from "I need a laptop for programming" through product selection, delivery details, M-Pesa payment and confirmation, with the owner automatically SMS’d the order and receipt. Refactored from an earlier build that ran two conflicting AI agents across 11 workflows and 172 nodes — and had processed zero successful payments — down to 6 focused workflows with a single point of AI involvement, plus the payment-recovery safety net the original design lacked.',
-    image: '/work/n8n-automation.webp',
-    link: 'https://drive.google.com/file/d/1ameTD1tr2GS4D1jOzUbSvyFFEp7UHt6V/view',
-    linkText: 'Watch the demo',
-    repo: 'private',
-    category: 'Automation',
-    status: 'public'
   },
 
   /* --------------------------------- Websites ------------------------------- */
