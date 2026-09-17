@@ -133,6 +133,24 @@ export const solvedProblems: SolvedProblem[] = [
     status: 'public'
   },
   {
+    slug: 'guardaiops',
+    title: 'GuardAIOps',
+    summary:
+      'A control-gated review platform that catches what AI-written infrastructure breaks, before it merges.',
+    problem:
+      'Teams now generate a month of Terraform, GitHub Actions and Kubernetes YAML in an afternoon with Claude or Copilot, but nobody reads all of it — and the destroy is always on line 190. Manual review does not scale to that volume, compliance evidence gets reconstructed by hand for every audit and questionnaire, and console drift goes unnoticed until it is a production incident or a finding on the next audit.',
+    solution:
+      'Built a phase-gate check that runs on the pull request itself: every resource in the plan reviewed against named controls mapped to CIS, NIST 800-53, NIST CSF, PCI DSS, HIPAA, SOC 2, FedRAMP and SLSA, each finding returned with a code, the control it belongs to and the framework clause behind it. It runs on the customer’s own runners and in their own accounts, so no infrastructure code ever leaves their perimeter, and it drops into the same GitHub check flow teams already use — no new dashboard, no standing agent in production.',
+    outcome:
+      'Clean changes merge untouched with the evidence recorded automatically; changes that break a control are blocked with an exact reason instead of surfacing as an incident or an audit finding later. Reviews that used to depend on someone reading a diff line by line on a Thursday afternoon now happen the same way, every time, in under a minute.',
+    image: '/work/guardaiops.webp',
+    link: 'https://www.guardaiops.com',
+    linkText: 'Open GuardAIOps',
+    repo: 'private',
+    category: 'Websites',
+    status: 'public'
+  },
+  {
     slug: 'vacasky-adventure',
     title: 'VacaSky Adventure Travel Website',
     summary:
