@@ -31,6 +31,15 @@ export interface Testimonial {
 
 export const testimonials: Testimonial[] = [
   {
+    name: 'Prashant Chawla',
+    role: 'Founder',
+    business: 'GuardAIOps',
+    projectSlug: 'guardaiops',
+    quote:
+      "I keep bringing TriCreta back because they deliver, project after project — automation, Blue Horizon Estates, GuardAIOps, ValueHomePros. Every one of them was built right, on time, and exactly how I needed it.",
+    photo: '/avatars/prashant-chawla.png'
+  },
+  {
     name: 'Bernard Kimathi',
     role: null,
     business: 'KUCCPS Course Checker',

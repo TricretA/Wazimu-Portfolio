@@ -4,17 +4,17 @@ export const site = {
   /** The work name. Always secondary to `name`, never on its own. */
   workName: 'Tricreta',
   email: 'tricreta@gmail.com',
-  phone: '+254748776354',
-  phoneHref: 'tel:+254748776354',
+  phone: '+254790295408',
+  phoneHref: 'tel:+254790295408',
   cvUrl: 'https://flowcv.com/resume/7fwcwmo01w70',
   whatsapp:
-    "https://wa.me/254748776354?text=Hello%2C%20I%27m%20reaching%20out%20because%20my%20business%20is%20experiencing%20digital%20challenges%20and%20I%20would%20like%20to%20discuss%20how%20we%20can%20fix%20them.%20I%27m%20ready%20to%20implement%20a%20proper%20solution.",
+    "https://wa.me/254790295408?text=Hello%2C%20I%27m%20reaching%20out%20because%20my%20business%20is%20experiencing%20digital%20challenges%20and%20I%20would%20like%20to%20discuss%20how%20we%20can%20fix%20them.%20I%27m%20ready%20to%20implement%20a%20proper%20solution.",
   /**
    * Private builds — client automations especially — are deliberately kept off
    * the open web, so the case study offers a walkthrough instead of a URL.
    */
   privateAccess:
-    'https://wa.me/254748776354?text=Hello%2C%20I%20saw%20one%20of%20your%20private%20deployments%20on%20your%20portfolio%20and%20would%20like%20to%20request%20a%20walkthrough.',
+    'https://wa.me/254790295408?text=Hello%2C%20I%20saw%20one%20of%20your%20private%20deployments%20on%20your%20portfolio%20and%20would%20like%20to%20request%20a%20walkthrough.',
   socials: {
     linkedin: 'https://www.linkedin.com/in/tricreta',
     x: 'https://x.com/tricreta',
