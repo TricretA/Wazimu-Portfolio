@@ -42,8 +42,8 @@ export default function Method() {
 
       <div className="shell-width relative z-[1]">
         <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: reduce ? 0 : 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="section-head"
@@ -63,8 +63,8 @@ export default function Method() {
           {PROCESS.map((item, index) => (
             <motion.div
               key={item.step}
-              initial={{ opacity: 0, y: reduce ? 0 : 18 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ y: reduce ? 0 : 18 }}
+              whileInView={{ y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{
                 duration: 0.5,

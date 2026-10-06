@@ -3,7 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { ArrowLeft, ArrowUpRight } from 'lucide-react';
 import { site } from '../data/site';
 import { legalPages, type LegalSlug } from '../data/legal';
-import { routeLink } from '../lib/route';
+import { pathFor, routeLink } from '../lib/route';
 
 interface Props {
   slug: LegalSlug;
@@ -92,8 +92,8 @@ export default function LegalShell({ slug, eyebrow, title, tagline, updated, chi
       <main className="page-content">
         <div className="shell-width max-w-[760px] pb-20 pt-14 sm:pb-28 sm:pt-20">
           <motion.div
-            initial={{ opacity: 0, y: reduce ? 0 : 18 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: reduce ? 0 : 18 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
           >
             <span className="mono-tag">{eyebrow}</span>
@@ -109,8 +109,8 @@ export default function LegalShell({ slug, eyebrow, title, tagline, updated, chi
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0, y: reduce ? 0 : 18 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: reduce ? 0 : 18 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.55, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
             className="mt-10"
           >
@@ -125,7 +125,7 @@ export default function LegalShell({ slug, eyebrow, title, tagline, updated, chi
               {siblings.map((page) => (
                 <a
                   key={page.slug}
-                  {...routeLink(`/${page.slug}`)}
+                  {...routeLink(pathFor.legal(page.slug))}
                   className="inline-flex items-center gap-1 text-xs font-medium text-[var(--muted)] transition-colors hover:text-[var(--text)]"
                 >
                   {page.title} <ArrowUpRight className="h-3 w-3" />

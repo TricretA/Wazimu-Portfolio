@@ -1,0 +1,16 @@
+# Cloudflare Pages routing.
+#
+# Order matters: Pages serves the first match, so the catch-all must be LAST or
+# it swallows every real file. That is what was happening before — /robots.txt,
+# /og.png and every mistyped URL returned the homepage with a 200, which turns
+# each one into another duplicate of the homepage in Google's index.
+#
+# Turn OFF the dashboard's "Single Page Application" setting when deploying, or
+# it reinstates its own catch-all above these rules.
+#
+# Note: Pages cannot match on query strings, so the legacy `/?problem=<slug>`
+# deep links are redirected in the app instead (see src/App.tsx).
+
+# All 66 pages are real files on disk — nothing here is an SPA route any more,
+# so anything that falls through genuinely does not exist. 404, not 200.
+/*    /404.html    404

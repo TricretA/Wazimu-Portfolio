@@ -4,7 +4,7 @@ import { FaWhatsapp } from 'react-icons/fa';
 import { site } from '../data/site';
 import { problemCount } from '../data/problems';
 import { legalPages } from '../data/legal';
-import { routeLink } from '../lib/route';
+import { pathFor, routeLink } from '../lib/route';
 
 /** 23 → "23rd". Handles the 11/12/13 exceptions. */
 function ordinal(value: number) {
@@ -21,8 +21,8 @@ export default function SiteFooter() {
     <footer id="contact" className="section-divider relative overflow-hidden">
       <div className="shell-width relative z-[1] py-24 text-center sm:py-32">
         <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: reduce ? 0 : 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
@@ -67,7 +67,7 @@ export default function SiteFooter() {
             {legalPages.map((page) => (
               <a
                 key={page.slug}
-                {...routeLink(`/${page.slug}`)}
+                {...routeLink(pathFor.legal(page.slug))}
                 className="transition-colors hover:text-[var(--text)]"
               >
                 {page.label}

@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { X, ArrowRight } from 'lucide-react';
-import { insights, type Insight } from '../data/insights';
+import { insights, findInsight, type Insight } from '../data/insights';
+import { closeOverlay, pathFor, routeLink, useRouteState } from '../lib/route';
 import { useModalBehaviour } from '../hooks/useModalBehaviour';
 import { emphasise } from '../lib/emphasise';
 import Portal from './Portal';
@@ -63,35 +63,48 @@ function InsightModal({ post, onClose }: { post: Insight; onClose: () => void })
 
 export default function Insights() {
   const reduce = useReducedMotion();
-  const [openId, setOpenId] = useState<number | null>(null);
-  const selected = insights.find((post) => post.id === openId) ?? null;
+
+  /*
+   * Same arrangement as the case studies: the open article is read off the
+   * URL. These were keyed by a numeric id and unreachable from outside the
+   * page, while the slugs needed to address them sat unused in the data file.
+   */
+  const { route, asModal } = useRouteState();
+  const selected =
+    asModal && route.kind === 'insight' ? (findInsight(route.slug) ?? null) : null;
 
   return (
     <section id="insights" className="section-band section-divider relative">
       <div className="shell-width">
         <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: reduce ? 0 : 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="section-head"
         >
           <h2 className="section-title">Things worth saying out loud</h2>
+          <a
+            {...routeLink(pathFor.insightIndex())}
+            className="mono-tag mt-6 inline-flex items-center gap-1.5 transition-colors hover:!text-[var(--text)]"
+          >
+            All writing <ArrowRight className="h-3 w-3" />
+          </a>
         </motion.div>
 
         <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-3">
           {insights.map((post, index) => (
-            <motion.button
+            <motion.a
               key={post.id}
-              initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ y: reduce ? 0 : 20 }}
+              whileInView={{ y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{
                 duration: 0.5,
                 delay: reduce ? 0 : index * 0.08,
                 ease: [0.16, 1, 0.3, 1]
               }}
-              onClick={() => setOpenId(post.id)}
+              {...routeLink(pathFor.insight(post.slug), { modal: true })}
               className="glass-card group flex h-full flex-col items-center p-6 text-center hover:-translate-y-1"
             >
               <span className="mono-tag mb-4">{readTime(post.minutes)}</span>
@@ -107,13 +120,15 @@ export default function Insights() {
               <span className="mono-tag mt-auto inline-flex items-center gap-1.5 pt-6 transition-colors group-hover:!text-[var(--text)]">
                 Take a look <ArrowRight className="h-3 w-3" />
               </span>
-            </motion.button>
+            </motion.a>
           ))}
         </div>
       </div>
 
       <AnimatePresence>
-        {selected && <InsightModal post={selected} onClose={() => setOpenId(null)} />}
+        {selected && (
+          <InsightModal post={selected} onClose={() => closeOverlay(pathFor.home())} />
+        )}
       </AnimatePresence>
     </section>
   );

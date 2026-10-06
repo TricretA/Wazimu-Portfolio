@@ -57,8 +57,8 @@ export default function SiteHeader({ onOpenAbout }: Props) {
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex justify-center pointer-events-none">
       <motion.div
-        initial={{ y: -24, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
+        initial={{ y: -24 }}
+        animate={{ y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className={`pointer-events-auto mt-3 w-[calc(100%-1.5rem)] max-w-[1180px] transition-all duration-300 ${
           scrolled ? 'glass-bar px-4 py-2.5' : 'px-4 py-3.5'

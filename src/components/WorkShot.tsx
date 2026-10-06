@@ -16,8 +16,18 @@ export default function WorkShot({ problem, banner = false }: Props) {
     return (
       <img
         src={problem.image}
-        alt={`${problem.title} screenshot`}
-        loading="lazy"
+        /*
+         * "<title> screenshot" describes the file, not the picture. Naming
+         * what the thing actually is gives a screen reader something useful
+         * and gives image search a reason to surface it.
+         */
+        alt={`${problem.title} — ${problem.summary}`}
+        loading={banner ? 'eager' : 'lazy'}
+        decoding="async"
+        /* Intrinsic 16:10, so the browser reserves the space before the
+           image arrives instead of shifting everything below it. */
+        width={1280}
+        height={800}
         className={`work-shot${banner ? ' work-shot--banner' : ''}`}
       />
     );

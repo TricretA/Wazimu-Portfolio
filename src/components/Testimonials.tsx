@@ -95,8 +95,8 @@ export default function Testimonials() {
     <section id="clients" className="section-band section-divider relative">
       <div className="shell-width">
         <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: reduce ? 0 : 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="section-head"

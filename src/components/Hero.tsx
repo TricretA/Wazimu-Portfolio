@@ -24,9 +24,19 @@ export default function Hero() {
     };
   }, [reduce]);
 
+/*
+ * Entry reveals slide, they do not fade.
+ *
+ * Every page is prerendered, so whatever `initial` sets is what sits in the
+ * static HTML that crawlers read — and an `opacity: 0` there means the text is
+ * present but hidden, which is the one state you never want a search engine to
+ * find content in. A translate-only reveal keeps the motion and leaves every
+ * word fully opaque from the first byte. Modals are exempt: they only ever
+ * exist after hydration, so nothing machine-readable depends on them.
+ */
   const rise = (delay: number) => ({
-    initial: { opacity: 0, y: reduce ? 0 : 22 },
-    animate: { opacity: 1, y: 0 },
+    initial: { y: reduce ? 0 : 22 },
+    animate: { y: 0 },
     transition: { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] as const }
   });
 
@@ -45,19 +55,36 @@ export default function Hero() {
           </span>
         </motion.div>
 
-        <motion.h2 {...rise(0.08)} className="display-title mt-7">
-          I build systems that
-          <br className="hidden sm:block" /> quietly make businesses{' '}
-          <span className="italic font-normal text-[var(--amber)]">work</span>.
-        </motion.h2>
+        {/*
+          The page's only h1, and the site's only chance to say what this
+          person does in words someone would actually search or ask for.
 
-        <motion.p {...rise(0.16)} className="section-copy mt-6 !max-w-[54ch]">
-          I design digital products that convert visitors, automate operations, and
-          eliminate the things slowing your business down.
+          "I build systems that quietly make businesses work" is the better
+          line and it stays — as the sub-head. It is also, for retrieval
+          purposes, four nouns none of which is a thing anyone looks for. The
+          h1 carries the specialism and the geography; the line underneath
+          carries the voice.
+        */}
+        <motion.h1 {...rise(0.08)} className="display-title mt-7">
+          Automation &amp; AI systems for{' '}
+          <span className="italic font-normal text-[var(--amber)]">African</span>{' '}
+          businesses
+        </motion.h1>
+
+        <motion.p {...rise(0.14)} className="section-copy mt-5 !max-w-[56ch] !text-[1.05rem]">
+          I build systems that quietly make businesses{' '}
+          <span className="italic text-[var(--amber)]">work</span> — WhatsApp Business
+          API automations, M-Pesa integrations, n8n workflows and AI agents that remove
+          the manual steps slowing you down.
+        </motion.p>
+
+        <motion.p {...rise(0.2)} className="section-copy mt-4 !max-w-[54ch] !text-[0.88rem]">
+          {site.name} · {site.jobTitle} · based in {site.location.country}, working
+          remotely worldwide.
         </motion.p>
 
         <motion.div
-          {...rise(0.24)}
+          {...rise(0.28)}
           className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row"
         >
           <a href="#index" className="primary-button breathe w-full sm:w-auto">

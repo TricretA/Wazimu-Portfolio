@@ -1,4 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap');
+/*
+ * Fonts are requested from the document <head> (see scripts/prerender.mjs),
+ * not with an @import here.
+ *
+ * An @import at the top of a stylesheet is serial: the browser parses this
+ * file, discovers a second stylesheet on another origin, and blocks first
+ * paint until that one arrives too. Moving it to the head makes the two
+ * requests run in parallel behind the preconnect that was already there.
+ */
 @import "tailwindcss";
 
 @theme {
@@ -1011,6 +1019,38 @@
     background:
       radial-gradient(ellipse 70% 90% at 50% 0%, rgba(209, 138, 79, 0.2), transparent 70%),
       linear-gradient(160deg, rgba(145, 183, 255, 0.12), rgba(10, 14, 22, 0.9));
+  }
+
+  /* ---------- Credential certificate artwork ----------
+     The certificate itself is a white card with its own colours baked in, so
+     it gets a light mat rather than sitting bare against the dark surface —
+     the same reasoning a printed certificate gets a frame. Sized to the
+     certificate's real 600×464 export so neither dimension ever stretches. */
+  .credential-figure {
+    display: block;
+    width: 100%;
+    max-width: 280px;
+    height: auto;
+    aspect-ratio: 600 / 464;
+    object-fit: contain;
+    border-radius: 10px;
+    background: #fff;
+    padding: 0.5rem;
+    border: 1px solid var(--line-soft);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .credential-fallback {
+    display: flex;
+    width: 100%;
+    max-width: 280px;
+    aspect-ratio: 600 / 464;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: 1px dashed var(--line);
+    background: rgba(255, 255, 255, 0.03);
   }
 
   .typing-caret::after {

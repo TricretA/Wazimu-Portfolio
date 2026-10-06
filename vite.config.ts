@@ -6,28 +6,34 @@ import { defineConfig } from 'vite';
 export default defineConfig(() => {
   return {
     plugins: [react(), tailwindcss()],
+
     build: {
       /*
-       * Four entries, not one. `/privacy`, `/terms` and `/data` are required
-       * at real URLs by platform reviewers (Meta's WhatsApp API among them),
-       * and building them as static files means the URLs resolve on any host
-       * without an SPA rewrite rule. Each still boots the same app — the
-       * router in `src/lib/route.ts` picks the page off the pathname.
+       * One HTML entry, not four.
+       *
+       * The site used to hand-maintain a separate `index.html` per URL, which
+       * worked at four pages and does not at sixty-six. Every page is now
+       * written by `scripts/prerender.mjs`, which takes this build's output as
+       * its template — so the hashed asset names are always current and the
+       * head is generated from the same data the page renders.
+       *
+       * The SSR pass is driven from the command line rather than from here
+       * (`vite build --ssr src/entry-server.tsx --outDir .ssr`), because the
+       * two builds want different entries and different output directories,
+       * and branching on `isSsrBuild` inside one config object is the kind of
+       * cleverness that fails silently. It builds into a throwaway `.ssr/`
+       * that the prerender and SEO scripts import and then delete.
        */
-      rollupOptions: {
-        input: {
-          main: path.resolve(__dirname, 'index.html'),
-          privacy: path.resolve(__dirname, 'privacy/index.html'),
-          terms: path.resolve(__dirname, 'terms/index.html'),
-          data: path.resolve(__dirname, 'data/index.html')
-        }
-      }
+      outDir: 'dist',
+      emptyOutDir: true
     },
+
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.')
       }
     },
+
     server: {
       // HMR is disabled in AI Studio via the DISABLE_HMR env var.
       hmr: process.env.DISABLE_HMR !== 'true'

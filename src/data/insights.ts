@@ -2,6 +2,16 @@ export interface Insight {
   id: number;
   slug: string;
   title: string;
+  /**
+   * ISO date the piece went live, and the date it last changed.
+   *
+   * Both are emitted as `datePublished` / `dateModified` in Article schema and
+   * shown on the page. Answer engines weight freshness heavily — Perplexity
+   * disproportionately so — and an undated article is one they cannot rank on
+   * recency at all. Update `updated` whenever the body changes materially.
+   */
+  published: string;
+  updated?: string;
   /** Minutes — rendered as "N minute read". */
   minutes: number;
   /** One line for the card, above the fold. */
@@ -17,6 +27,7 @@ export const insights: Insight[] = [
   {
     id: 1,
     slug: 'why-kenyan-business-websites-fail',
+    published: '2026-08-08',
     title: "Why most Kenyan business websites fail (it's not the design)",
     minutes: 2,
     dek: 'A site that exists is not a site that works. Most were never built to do a job.',
@@ -33,6 +44,7 @@ Start there, and the design becomes the easy part.`
   {
     id: 2,
     slug: 'real-cost-of-doing-it-manually',
+    published: '2026-08-08',
     title: 'The real cost of doing it manually',
     minutes: 2,
     dek: "The most expensive line in your business doesn't appear on any invoice.",
@@ -47,6 +59,7 @@ The real question was never whether you can afford to automate. It is whether yo
   {
     id: 3,
     slug: 'ill-add-ai-later',
+    published: '2026-08-08',
     title: "Why 'I'll add AI later' is a decision you'll regret",
     minutes: 2,
     dek: 'Waiting feels neutral. It is not — the gap compounds while you wait.',
@@ -59,3 +72,10 @@ That is also why the ambitious projects are the wrong place to start. The system
 The best time to start was six months ago. The second best is this week — and the first thing to build is the smallest one that removes real work.`
   }
 ];
+
+export const findInsight = (slug: string) => insights.find((post) => post.slug === slug);
+
+/** Newest first — the order the index and the sitemap should present them in. */
+export const insightsByDate = [...insights].sort((a, b) =>
+  (b.updated ?? b.published).localeCompare(a.updated ?? a.published)
+);

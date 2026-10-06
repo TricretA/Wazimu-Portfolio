@@ -1,18 +1,18 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { Search, X, SlidersHorizontal, ArrowUpRight } from 'lucide-react';
+import { Search, X, SlidersHorizontal, ArrowUpRight, ArrowRight } from 'lucide-react';
 import {
   solvedProblems,
   categories,
   categoryIcon,
   problemCount,
-  type FilterCategory,
-  type SolvedProblem
+  findProblem,
+  type FilterCategory
 } from '../data/problems';
 import ProblemDetail from './ProblemDetail';
 import CategoryBadge from './CategoryBadge';
 import WorkShot from './WorkShot';
-import { OPEN_PROBLEM_EVENT } from '../lib/openProblem';
+import { closeOverlay, pathFor, routeLink, useRouteState } from '../lib/route';
 
 const INITIAL_VISIBLE = 9;
 
@@ -21,46 +21,20 @@ export default function ProblemIndex() {
   const [activeCategory, setActiveCategory] = useState<FilterCategory>('All');
   const [query, setQuery] = useState('');
   const [showAll, setShowAll] = useState(false);
-  const [selected, setSelected] = useState<SolvedProblem | null>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
-  /* ----- deep link: ?problem=slug opens the case study directly ----- */
-  useEffect(() => {
-    const slug = new URLSearchParams(window.location.search).get('problem');
-    if (!slug) return;
-    const match = solvedProblems.find((p) => p.slug === slug);
-    if (!match) return;
-    setSelected(match);
-    // Defer so layout has settled before scrolling the section into view.
-    requestAnimationFrame(() =>
-      document.getElementById('index')?.scrollIntoView({ block: 'start' })
-    );
-  }, []);
+  /*
+   * Which case study is open is a fact about the URL, not about this
+   * component. `/work/<slug>` pushed as an overlay opens it here; the same URL
+   * loaded cold renders the standalone page instead (see `App`). That keeps
+   * the browsing experience identical while giving every case study a real,
+   * shareable, crawlable address — which is what it never had.
+   */
+  const { route, asModal } = useRouteState();
+  const selected =
+    asModal && route.kind === 'work' ? (findProblem(route.slug) ?? null) : null;
 
-  const openProblem = useCallback((problem: SolvedProblem) => {
-    setSelected(problem);
-    const url = new URL(window.location.href);
-    url.searchParams.set('problem', problem.slug);
-    window.history.replaceState({}, '', url);
-  }, []);
-
-  const closeProblem = useCallback(() => {
-    setSelected(null);
-    const url = new URL(window.location.href);
-    url.searchParams.delete('problem');
-    window.history.replaceState({}, '', url);
-  }, []);
-
-  /* ----- other sections can request a case study (e.g. testimonial cards) ----- */
-  useEffect(() => {
-    const onRequest = (event: Event) => {
-      const slug = (event as CustomEvent<string>).detail;
-      const match = solvedProblems.find((p) => p.slug === slug);
-      if (match) openProblem(match);
-    };
-    window.addEventListener(OPEN_PROBLEM_EVENT, onRequest);
-    return () => window.removeEventListener(OPEN_PROBLEM_EVENT, onRequest);
-  }, [openProblem]);
+  const closeProblem = () => closeOverlay(pathFor.home());
 
   /* ----- `/` focuses search, like a real console ----- */
   useEffect(() => {
@@ -107,8 +81,8 @@ export default function ProblemIndex() {
       <div className="shell-width">
         {/* ---------- Section head ---------- */}
         <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: reduce ? 0 : 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="section-head"
@@ -203,18 +177,18 @@ export default function ProblemIndex() {
             >
               <AnimatePresence mode="popLayout">
                 {visible.map((project, idx) => (
-                  <motion.button
+                  <motion.a
                     key={project.slug}
                     layout={!reduce}
-                    initial={{ opacity: 0, y: reduce ? 0 : 16 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={{ y: reduce ? 0 : 16 }}
+                    animate={{ y: 0 }}
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{
                       duration: 0.36,
                       delay: reduce ? 0 : Math.min(idx * 0.03, 0.24),
                       ease: [0.16, 1, 0.3, 1]
                     }}
-                    onClick={() => openProblem(project)}
+                    {...routeLink(pathFor.work(project.slug), { modal: true })}
                     data-category={project.category}
                     className="glass-card group flex h-full flex-col overflow-hidden text-center hover:-translate-y-1"
                   >
@@ -235,18 +209,27 @@ export default function ProblemIndex() {
                         Details <ArrowUpRight className="h-3.5 w-3.5" />
                       </span>
                     </div>
-                  </motion.button>
+                  </motion.a>
                 ))}
               </AnimatePresence>
             </motion.div>
 
-            {isTruncated && (
-              <div className="mt-10 flex justify-center">
+            <div className="mt-10 flex flex-col items-center gap-4">
+              {isTruncated && (
                 <button onClick={() => setShowAll(true)} className="secondary-button">
                   Show all {filtered.length} problems
                 </button>
-              </div>
-            )}
+              )}
+              {/* The grid above is filtered, paginated and JavaScript-driven —
+                  fine for a person, useless to a crawler that sees nine cards
+                  and stops. This is the way through to all of them. */}
+              <a
+                {...routeLink(pathFor.workIndex())}
+                className="mono-tag inline-flex items-center gap-1.5 transition-colors hover:!text-[var(--text)]"
+              >
+                Browse all {problemCount} as a full index <ArrowRight className="h-3 w-3" />
+              </a>
+            </div>
           </>
         ) : (
           <div className="glass-card mt-8 flex flex-col items-center justify-center px-6 py-20 text-center">

@@ -1,0 +1,15 @@
+{
+  "name": "Tricreta — Reinhard Bonke",
+  "short_name": "Tricreta",
+  "description": "Automation engineer and applied AI developer in Kenya. WhatsApp Business API, M-Pesa integrations, n8n workflows and AI agents.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#020307",
+  "theme_color": "#020307",
+  "lang": "en",
+  "icons": [
+    { "src": "/favicon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/logo.webp", "sizes": "512x512", "type": "image/webp", "purpose": "maskable" }
+  ]
+}

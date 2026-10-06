@@ -1,5 +1,7 @@
 import { motion, useReducedMotion } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
 import { services, type StackItem } from '../data/services';
+import { pathFor, routeLink } from '../lib/route';
 
 function StackChip({ item }: { item: StackItem }) {
   return (
@@ -22,8 +24,8 @@ export default function Capability() {
     <section id="capability" className="section-band section-divider relative">
       <div className="shell-width">
         <motion.div
-          initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ y: reduce ? 0 : 20 }}
+          whileInView={{ y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="section-head"
@@ -33,6 +35,14 @@ export default function Capability() {
             Scope decides price, so there are no numbers here. Tell me what is broken and
             you get a fixed figure in writing, not a bracket.
           </p>
+          {/* A real link, not an anchor: it is how a crawler reaches the six
+              service pages, and how a reader gets the detail behind a card. */}
+          <a
+            {...routeLink(pathFor.serviceIndex())}
+            className="mono-tag mt-6 inline-flex items-center gap-1.5 transition-colors hover:!text-[var(--text)]"
+          >
+            Every service in detail <ArrowRight className="h-3 w-3" />
+          </a>
         </motion.div>
 
         <div className="hue-cycle mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -41,8 +51,8 @@ export default function Capability() {
             return (
               <motion.article
                 key={service.title}
-                initial={{ opacity: 0, y: reduce ? 0 : 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ y: reduce ? 0 : 20 }}
+                whileInView={{ y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
                 transition={{
                   duration: 0.5,
@@ -94,6 +104,15 @@ export default function Capability() {
                     ))}
                   </div>
                 </div>
+
+                {service.slug === 'software-development' && (
+                  <a
+                    href="#credentials"
+                    className="mt-5 text-[0.76rem] text-[var(--faint)] underline decoration-[var(--line)] underline-offset-4 transition-colors hover:text-[var(--soft)] hover:decoration-[var(--line-strong)]"
+                  >
+                    Google Play Academy Ignite — completed
+                  </a>
+                )}
               </motion.article>
             );
           })}
