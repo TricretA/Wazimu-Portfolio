@@ -1,0 +1,35 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  /*
+   * An assets-only Worker — the modern replacement for classic Pages. There is
+   * no Worker script on purpose: the whole site is static HTML written by
+   * `scripts/prerender.mjs` during `npm run build`, and this config exists
+   * only so `wrangler deploy` uploads that already-built `dist/` folder.
+   *
+   * Without this file, `wrangler deploy` treats the project as brand new and
+   * runs its interactive "zero config" Vite setup — which installs
+   * `@cloudflare/vite-plugin`, rewrites the SSR build's output layout, and
+   * breaks `scripts/prerender.mjs`'s expectation of a plain `.ssr/entry-server.js`.
+   * A committed config short-circuits that wizard entirely.
+   */
+  "name": "portfolio",
+  "compatibility_date": "2026-10-06",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "dist",
+    /*
+     * Every route is a real prerendered file — nothing here is a client-side
+     * router — so a miss is a genuine 404, not an SPA fallback. Serves
+     * `404.html` (see scripts/prerender.mjs) with a real 404 status.
+     *
+     * There used to be a `public/_redirects` with `/* /404.html 404` doing
+     * this job — that was written for classic Pages, whose `_redirects`
+     * accepts a `404` pseudo-status. Workers' asset router only accepts real
+     * redirect codes (200/301/302/303/307/308) there and rejects the file
+     * outright, so this config field is the only mechanism now.
+     */
+    "not_found_handling": "404-page"
+  }
+}
